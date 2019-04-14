@@ -18,6 +18,7 @@ module.exports = buildSchema(`
     }
     type RootMutation {
         createTodo(todoInput: TodoInput): Todo
+        deleteTodo(todoId: ID!): Todo
     }
     schema {
         query: RootQuery

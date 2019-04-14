@@ -21,14 +21,14 @@ module.exports =
         } 
     },
     createTodo: async (args, req) => {
-        const newTodo = new Todo({
+        const createTodo = new Todo({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
         });
 
         try{
-            const createdTodo = await newTodo
+            const createdTodo = await createTodo
                 .save()
                 .then(result => {
                     return result;
@@ -37,10 +37,29 @@ module.exports =
             return createdTodo;
             
         }
-        catch{
+        catch (err) {
             console.log('----> createTodo Error:\n', err);
             throw err;
         }
     },
+    deleteTodo: async (args, req) => {
+        try{
+        console.log('\nargs todo:', args, args.todoId)
+        const todo = await Todo
+            .findById(args.todoId)
+            .then(result => {
+                return result;
+            })
+
+         await Todo
+            .deleteOne({ _id: args.todoId });
+       
+        return todo;
+        }
+        catch (err) {
+            console.log('----> deleteTodo Error:\n', err);
+            throw err;
+        }
+    }
     
 }
