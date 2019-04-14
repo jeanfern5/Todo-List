@@ -1,13 +1,28 @@
-const express = require('express'); // import the express package
+//Server's main file
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const MongoClient = require('mongoose');
 
-const server = express(); // creates the server
+const Schema = require('./components/schema');
+const rootResolver = require('./components/resolvers/rootResolver');
 
-// handle requests to the root of the api, the / route
-server.get('/', (req, res) => {
-  res.send('Hello from Express');
+// Create an express server and GraphQL endpoint
+const app = express();
+app.use(express.json());
+
+app.use('/graphql', graphqlHTTP({
+    schema: Schema,
+    rootValue: rootResolver,
+    graphiql: true
+}));
+
+// Connects to MongoDB
+MongoClient.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0-oomgm.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`, { useNewUrlParser: true } )
+.then(() => {
+    app.listen(8080, () => {
+        console.log('\n========== Express GraphQL Server Now Running On localhost:8080/graphql ==========\n');  
+    })
+})
+.catch(err => {
+    console.log('\n=====> MONGO CONNECTION ERROR:\n', err);
 });
-
-// watch for connections on port 8080
-server.listen(8080, () =>
-  console.log('\nServer running on http://localhost:8080\n')
-);
