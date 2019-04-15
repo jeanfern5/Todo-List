@@ -1,5 +1,9 @@
 import React from 'react';
+
 import TodoList from './TodoList';
+import TodoForm from './TodoForm';
+import { ContentContainer, Heading } from '../Styling/globalStyling';
+
 
 export default class TodoContainer extends React.Component {
   constructor(props){
@@ -7,15 +11,15 @@ export default class TodoContainer extends React.Component {
     this.state = {
       items:[
         {
-          task: 'Organize Garage',
           id: 1528817077286,
-          date: '4/15/2019',
+          date: '4/20/2019',
+          task: 'Organize Garage',
           description: "cleaning.............."
         },
         {
-          task: 'Bake Cookies',
           id: 1528817084358,
           date: '4/15/2019',
+          task: 'Bake Cookies',
           description: "chocolate chip.............."
         }
       ],
@@ -24,13 +28,11 @@ export default class TodoContainer extends React.Component {
 
   render() {
     return (
-      <div className="todo-container">
-        <h1>Todo List</h1>
-        <TodoList 
-          items={this.state.items}
-        />
-  
-      </div>
+      <ContentContainer>
+        <Heading>Todo List</Heading>
+        <TodoList items={this.state.items} />
+        <TodoForm />
+      </ContentContainer>
     );
   };
 
