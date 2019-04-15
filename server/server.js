@@ -1,7 +1,8 @@
 //Server's main file
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const MongoClient = require('mongoose');
+// const MongoClient = require('mongoose');
+const MongoClient = require('mongodb').MongoClient;
 
 const Schema = require('./components/schema');
 const rootResolver = require('./components/resolvers/rootResolver');
@@ -17,8 +18,11 @@ app.use('/graphql', graphqlHTTP({
 }));
 
 // Connects to MongoDB
-MongoClient.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0-oomgm.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`, { useNewUrlParser: true } )
-.then(() => {
+const MONGO_URI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PWD}@cluster0-oomgm.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`;
+
+MongoClient.connect(MONGO_URI, { useNewUrlParser: true } )
+.then(result => {
+    console.log('--->result:', result)
     app.listen(8080, () => {
         console.log('\n========== Express GraphQL Server Now Running On localhost:8080/graphql ==========\n');  
     })
