@@ -19,8 +19,6 @@ export default class App extends Component {
 
 
 const AppContainer = styled.div`
-  // min-height: 41.7rem;
-  // width:100%
   display: flex;
   flex-direction: column;
   position: fixed;
