@@ -1,84 +1,125 @@
 //GraphQL Todos Resolver
-const Todo = require('../models/todos');
+const TodoDB = require('../models/todos');
 
 dateToString = date => new Date(date).toISOString();
 
 module.exports = 
 {
-    getTodos: async (args, req) => {
+    getTodos: async () => {
         try {
-            const todos = await Todo
+            const retrievedTodos = await TodoDB
                 .find()
-                .then(todos => {
-                    return todos;
+                .then(results => {
+                    console.log('\n-----> GetTodos:\n', results);
+                    return results;
                 })  
             
-            return todos      
+            return retrievedTodos      
         }
         catch (err) {
-            console.log('\n-----> getTodos Error:\n', err);
+            console.log('\n-----> GraphQL getTodos Error:\n', err);
             throw err;
         } 
     },
-    createTodo: async (args, req) => {
-        const createTodo = new Todo({
+    getSingleTodo: async (args) => {
+        try {
+            const todo = args.todoId;
+
+            if (todo){
+                const retrievedSingleTodo = await TodoDB
+                    .findById(todo)
+                    .then(result => {
+                        console.log('\n-----> getSingleTodo:\n', result);
+                        if (result === null){
+                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
+                        }
+                        return result;
+                    })  
+                
+                return retrievedSingleTodo    
+            }   
+        }
+        catch (err) {
+            console.log('\n-----> GraphQL getSingleTodo Error:\n', err);
+            throw err;
+        } 
+    },
+    createTodo: async (args) => {
+        const todoInput = new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
         });
 
         try {
-            const createdTodo = await createTodo
+            const createdTodo = await todoInput
                 .save()
                 .then(result => {
+                    console.log('\n-----> createTodo:\n', result);
                     return result;
                 })
 
-            return createdTodo;
-            
+            return createdTodo; 
         }
         catch (err) {
-            console.log('\n----> createTodo Error:\n', err);
+            console.log('\n----> GraphQL createTodo Error:\n', err);
             throw err;
         }
     },
-    updateTodo: async (args, req) => {
+    updateTodo: async (args) => {
         try {
-            const updatedTodo = await Todo
-            .findById(args.todoId)
-            .then(result => {
-                return result;
-            })
+            const todo = args.todoId;
 
-            await Todo 
-                .updateOne(
-                    {_id: args.todoId}, 
-                    {date:  new Date(args.todoInput.date), 
-                    description: args.todoInput.description}
-                )
+            if (todo){
+                const updatedTodo = await TodoDB
+                    .findById(todo)
+                    .then(result => {
+                        console.log('\n-----> updateTodo:\n', result);
+                        console.log('\n-----> todoInput:\n', args.todoInput);
+                        if (result === null){
+                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
+                        }
+                        return result;
+                    })
+
+                await TodoDB
+                    .updateOne(
+                        { _id: todo }, 
+                        { date:  new Date(args.todoInput.date), 
+                        description: args.todoInput.description }
+                    )
             
-            return updatedTodo;    
+                return updatedTodo;  
+            }     
         }
         catch (err) {
-            console.log('\n----> updateTodo Error:\n', err);
+            console.log('\n----> GraphQL updateTodo Error:\n', err);
             throw err; 
         }
     },
-    deleteTodo: async (args, req) => {
+    deleteTodo: async (args) => {
         try {
-        const deletedTodo = await Todo
-            .findById(args.todoId)
-            .then(result => {
-                return result;
-            })
+            const todo = args.todoId;
 
-        await Todo
-            .deleteOne({ _id: args.todoId });
-       
-        return deletedTodo;
+            if (todo){
+                const deletedTodo = await TodoDB
+                    .findById(todo)
+                    .then(result => {
+                        console.log('\n-----> deleteTodo:\n', result);
+                        if (result === null){
+                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
+                        }
+                        return result;
+                    })                    
+
+                await TodoDB
+                    .deleteOne({ _id: todo });
+            
+                return deletedTodo;    
+            }
         }
         catch (err) {
-            console.log('\n----> deleteTodo Error:\n', err);
+            console.log('\n----> GraphQL deleteTodo Error:\n', err);
             throw err;
         }
     }

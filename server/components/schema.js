@@ -5,16 +5,17 @@ module.exports = buildSchema(`
     type Todo {
         _id: ID!
         title: String!
-        date: String!
         description: String
+        date: String!
     }
     input TodoInput {
         title: String!
-        date: String!
         description: String
+        date: String!
     }
     type RootQuery {
         getTodos: [Todo!]!
+        getSingleTodo(todoId:ID!): Todo!
     }
     type RootMutation {
         createTodo(todoInput: TodoInput!): Todo
