@@ -1,5 +1,6 @@
 //GraphQL Todos Resolver
 const TodoDB = require('../models/todos');
+const UserDB = require('../models/users');
 
 dateToString = date => new Date(date).toISOString();
 
@@ -49,21 +50,28 @@ module.exports =
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
+            user: '5cb7586ae588980113a9cb43' 
         });
+        let createdTodo;
 
         try {
-            const createdTodo = await newTodo
-                .save()
-                .then(result => {
-                    console.log('\n-----> createTodo:\n', result);
-                    return result;
-                })
+            const todo = await newTodo.save();
+            createdTodo = { ...todo._doc, _id: todo.id, date: dateToString(todo._doc.date) };
 
-            return createdTodo; 
+            const user = await UserDB.findById('5cb7586ae588980113a9cb43');
+
+            if (!user) {
+                throw new Error('User not found.')
+            }
+
+            user.createdTodos.push(newTodo);
+            await user.save()
+
+            return createdTodo;
         }
         catch (err) {
             console.log('\n----> GraphQL createTodo Error:\n', err);
-            throw err;
+            throw err; 
         }
     },
     updateTodo: async (args) => {
