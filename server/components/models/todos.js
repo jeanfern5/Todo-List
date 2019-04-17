@@ -11,7 +11,11 @@ const todoSchema = new Schema({
         type: Date,
         required: true
     },
-    description: String
+    description: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    }
 })
 
 module.exports = mongoose.model('Todo', todoSchema);

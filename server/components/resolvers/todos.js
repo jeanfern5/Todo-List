@@ -45,14 +45,14 @@ module.exports =
         } 
     },
     createTodo: async (args) => {
-        const todoInput = new TodoDB({
+        const newTodo = new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
         });
 
         try {
-            const createdTodo = await todoInput
+            const createdTodo = await newTodo
                 .save()
                 .then(result => {
                     console.log('\n-----> createTodo:\n', result);
