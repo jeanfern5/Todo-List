@@ -2,20 +2,23 @@
 const TodoDB = require('../models/todos');
 const UserDB = require('../models/users');
 
-dateToString = date => new Date(date).toISOString();
+const { dateToString, user } = require('./helpers')
+
 
 module.exports = 
 {
     getTodos: async () => {
         try {
-            const retrievedTodos = await TodoDB
-                .find()
-                .then(results => {
-                    console.log('\n-----> GetTodos:\n', results);
-                    return results;
-                })  
-            
-            return retrievedTodos      
+            const retrievedTodos = await TodoDB.find();
+
+            return retrievedTodos.map(todo => {
+                return {
+                    ...todo._doc,
+                    _id: todo.id,
+                    date: dateToString(todo._doc.date),
+                    user: user.bind(this, todo.user)
+                }
+            })    
         }
         catch (err) {
             console.log('\n-----> GraphQL getTodos Error:\n', err);
@@ -24,20 +27,17 @@ module.exports =
     },
     getSingleTodo: async (args) => {
         try {
-            const todo = args.todoId;
+            const todoExists = await TodoDB.findById(args.todoId)
 
-            if (todo){
-                const retrievedSingleTodo = await TodoDB
-                    .findById(todo)
-                    .then(result => {
-                        console.log('\n-----> getSingleTodo:\n', result);
-                        if (result === null){
-                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
-                        }
-                        return result;
-                    })  
-                
-                return retrievedSingleTodo    
+            if (!todoExists) {
+                throw new Error('Todo not found.')
+            }
+
+            return {
+                ...todoExists._doc,
+                _id: todoExists.id,
+                date: dateToString(todoExists._doc.date),
+                user: user.bind(this, todoExists.user)
             }   
         }
         catch (err) {
@@ -50,22 +50,21 @@ module.exports =
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
-            user: '5cb7586ae588980113a9cb43' 
+            user: '5cb75afbc5b650015417c073' 
         });
         let createdTodo;
 
         try {
             const todo = await newTodo.save();
-            createdTodo = { ...todo._doc, _id: todo.id, date: dateToString(todo._doc.date) };
+            createdTodo = { ...todo._doc, _id: todo.id, date: dateToString(todo._doc.date), user: user.bind(this, todo.user) };
+            const userExists = await UserDB.findById('5cb75afbc5b650015417c073');
 
-            const user = await UserDB.findById('5cb7586ae588980113a9cb43');
-
-            if (!user) {
+            if (!userExists) {
                 throw new Error('User not found.')
             }
 
-            user.createdTodos.push(newTodo);
-            await user.save()
+            userExists.createdTodos.push(newTodo);
+            await userExists.save()
 
             return createdTodo;
         }

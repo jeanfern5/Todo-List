@@ -7,6 +7,7 @@ module.exports = buildSchema(`
         title: String!
         description: String
         date: String!
+        user: User!
     }
     input TodoInput {
         title: String!
@@ -17,6 +18,7 @@ module.exports = buildSchema(`
         _id: ID!
         email: String!
         password: String
+        createdTodos: [Todo!]
     }
     input UserInput {
         email: String!
