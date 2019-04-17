@@ -75,29 +75,22 @@ module.exports =
     },
     updateTodo: async (args) => {
         try {
-            const todo = args.todoId;
+            const todo = await TodoDB.findById(args.todoId);
+            console.log('---->todo', todo);
 
-            if (todo){
-                const updatedTodo = await TodoDB
-                    .findById(todo)
-                    .then(result => {
-                        console.log('\n-----> updateTodo:\n', result);
-                        console.log('\n-----> todoInput:\n', args.todoInput);
-                        if (result === null){
-                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
-                        }
-                        return result;
-                    })
-
-                await TodoDB
-                    .updateOne(
-                        { _id: todo }, 
-                        { date:  new Date(args.todoInput.date), 
-                        description: args.todoInput.description }
-                    )
+            if (!todo) {
+                throw new Error('Todo not found.')
+            }   
             
-                return updatedTodo;  
-            }     
+            await TodoDB
+                .updateOne(
+                    { _id: todo }, 
+                    { date:  new Date(args.todoInput.date), 
+                    description: args.todoInput.description }
+                )
+            
+            
+            return { _id: todo._id, title: todo.title, date: dateToString(args.todoInput.date), description: args.todoInput.description};  
         }
         catch (err) {
             console.log('\n----> GraphQL updateTodo Error:\n', err);
@@ -106,24 +99,15 @@ module.exports =
     },
     deleteTodo: async (args) => {
         try {
-            const todo = args.todoId;
+            const todo = await TodoDB.findById(args.todoId);
 
-            if (todo){
-                const deletedTodo = await TodoDB
-                    .findById(todo)
-                    .then(result => {
-                        console.log('\n-----> deleteTodo:\n', result);
-                        if (result === null){
-                            console.log(`\n Todo with id:${ todo } does not exist or was deleted.\n`)
-                        }
-                        return result;
-                    })                    
+            if (!todo) {
+                throw new Error('Todo not found.')
+            }             
 
-                await TodoDB
-                    .deleteOne({ _id: todo });
-            
-                return deletedTodo;    
-            }
+            await TodoDB.deleteOne({ _id: todo });
+
+            return todo;    
         }
         catch (err) {
             console.log('\n----> GraphQL deleteTodo Error:\n', err);
