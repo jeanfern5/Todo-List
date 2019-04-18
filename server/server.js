@@ -2,13 +2,17 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const MongoClient = require('mongoose');
+require('dotenv').config()
 
 const Schema = require('./components/schema');
 const rootResolver = require('./components/resolvers/rootResolver');
+const isAuth = require('./components/resolvers/middleware');
 
 // Create an express server and GraphQL endpoint
 const app = express();
 app.use(express.json());
+
+app.use(isAuth);
 
 // app.use((req, res, next) => {
 //     console.log('--->HEREreq', res)

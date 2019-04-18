@@ -1,8 +1,9 @@
 //GraphQL Todos Resolver
+//retrieves all todos, retrieves single todo, creates a todo, updates a todo, and deletes a todo
 const TodoDB = require('../models/todos');
 const UserDB = require('../models/users');
 
-const { dateToString, user } = require('./helpers')
+const { reformatResults, user } = require('./helpers')
 
 
 module.exports = 
@@ -12,12 +13,7 @@ module.exports =
             const retrievedTodos = await TodoDB.find();
 
             return retrievedTodos.map(todo => {
-                return {
-                    ...todo._doc,
-                    _id: todo.id,
-                    date: dateToString(todo._doc.date),
-                    user: user.bind(this, todo.user)
-                }
+                return reformatResults(todo);
             })    
         }
         catch (err) {
@@ -33,12 +29,7 @@ module.exports =
                 throw new Error('Todo not found.')
             }
 
-            return {
-                ...todoExists._doc,
-                _id: todoExists.id,
-                date: dateToString(todoExists._doc.date),
-                user: user.bind(this, todoExists.user)
-            }   
+            return reformatResults(todoExists);   
         }
         catch (err) {
             console.log('\n-----> GraphQL getSingleTodo Error:\n', err);
@@ -52,21 +43,26 @@ module.exports =
             date: new Date(args.todoInput.date),
             user: '5cb75afbc5b650015417c073' 
         });
-        let createdTodo;
 
         try {
-            const todo = await newTodo.save();
-            createdTodo = { ...todo._doc, _id: todo.id, date: dateToString(todo._doc.date), user: user.bind(this, todo.user) };
             const userExists = await UserDB.findById('5cb75afbc5b650015417c073');
+            const todoExists = await TodoDB.findOne({ title: args.todoInput.title });
 
             if (!userExists) {
                 throw new Error('User not found.')
+            }
+            else if (todoExists){
+                throw new Error('Todo with that title already exists, try naming it differently.')
             }
 
             userExists.createdTodos.push(newTodo);
             await userExists.save()
 
-            return createdTodo;
+            return await newTodo
+                .save()
+                .then(result => {
+                    return reformatResults(result);
+                })
         }
         catch (err) {
             console.log('\n----> GraphQL createTodo Error:\n', err);
@@ -90,7 +86,7 @@ module.exports =
                 )
             
             
-            return { _id: todo._id, title: todo.title, date: dateToString(args.todoInput.date), description: args.todoInput.description};  
+            return { _id: todo._id, title: todo.title, date: dateToString(args.todoInput.date), description: args.todoInput.description, user: user.bind(this, todo.user)};  
         }
         catch (err) {
             console.log('\n----> GraphQL updateTodo Error:\n', err);
@@ -107,7 +103,7 @@ module.exports =
 
             await TodoDB.deleteOne({ _id: todo });
 
-            return todo;    
+            return reformatResults(todo);    
         }
         catch (err) {
             console.log('\n----> GraphQL deleteTodo Error:\n', err);

@@ -17,22 +17,26 @@ module.exports = buildSchema(`
     type User {
         _id: ID!
         email: String!
-        password: String
         createdTodos: [Todo!]
     }
     input UserInput {
         email: String!
         password: String!
     }
+    type AuthData {
+        userId: ID!
+        token: String
+    }
     type RootQuery {
         getTodos: [Todo!]!
         getSingleTodo(todoId:ID!): Todo!
+        loginUser(email: String!, password: String!): AuthData!
     }
     type RootMutation {
         createTodo(todoInput: TodoInput!): Todo
         updateTodo(todoId: ID!, todoInput: TodoInput!): Todo!
         deleteTodo(todoId: ID!): Todo!
-        createUser(userInput: UserInput): User
+        signupUser(userInput: UserInput): User
     }
     schema {
         query: RootQuery

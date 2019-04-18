@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@wuweiweiwu/react-shopify-draggable": "0.0.5",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.0",
     "react-dom": "^16.8.6",

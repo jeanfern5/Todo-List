@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Droppable } from 'react-beautiful-dnd';
@@ -39,13 +38,15 @@ export default class TodoList extends Component {
 
     render() {
         return(
-            <Droppable droppableId="droppable"> 
+            <Droppable droppableId="droppable-1"> 
                 {(provided) => (
                     <TodoListContainer
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     >
-                        {this.props.todos.map((item, index) => <TodoItem key={item._id} item={item} index={index} />)}
+                        {this.props.todos.map((item, index) => (
+                        <TodoItem key={item._id} item={item} index={index} />
+                        ))}
                         {provided.placehoder}
                     </TodoListContainer>
                 )}
@@ -62,4 +63,3 @@ const TodoListContainer = styled.div`
     height: 75%;
     border: 1px solid green;
 `;
-

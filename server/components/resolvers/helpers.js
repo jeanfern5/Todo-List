@@ -1,4 +1,4 @@
-//Helper functions to assist in keeping resolver code clean
+//Helper functions to assist in keeping resolvers DRY
 const TodoDB = require('../models/todos');
 const UserDB = require('../models/users');
 
@@ -34,10 +34,21 @@ const user = async userId => {
     }  
 }
 
+//helps get better formatted results in graphiql and it binds results with the user
+const reformatResults = todo => {
+    return {
+        ...todo._doc,
+        _id: todo.id,
+        date: dateToString(todo._doc.date),
+        user: user.bind(this, todo.user)
+    }
+};
+
 
 
 module.exports ={
     dateToString,
     todos, 
-    user
+    user, 
+    reformatResults,
 }
