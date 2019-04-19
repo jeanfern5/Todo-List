@@ -6,7 +6,7 @@ require('dotenv').config()
 
 const Schema = require('./components/schema');
 const rootResolver = require('./components/resolvers/rootResolver');
-const { isAuth } = require('./components/resolvers/users');
+const isAuth = require('./components/resolvers/isAuthMiddleware');
 
 // Create an express server and GraphQL endpoint
 const app = express();

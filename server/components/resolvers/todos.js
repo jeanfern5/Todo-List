@@ -8,7 +8,7 @@ const { reformatResults, user } = require('./helpers')
 
 module.exports = 
 {
-    getTodos: async () => {
+    getTodos: async (args) => {
         try {
             const retrievedTodos = await TodoDB.find();
 
@@ -37,6 +37,12 @@ module.exports =
         } 
     },
     createTodo: async (args, req) => {
+        if ((!req.isAuth) || (req.isAuth === undefined)){
+            console.log('---->!!!createTodo isAuth', req.isAuth, req);
+            throw new Error('Not Authenticated!');
+        };
+        console.log('---->createTodo isAuth', req.isAuth);
+
         const newTodo = new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,

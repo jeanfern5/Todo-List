@@ -2,21 +2,20 @@
 //signs up a new user and logs in a user an existing user
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
 const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
-const AWS = require('aws-sdk'); //remove?
+const AWS = require('aws-sdk'); 
 const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 global.fetch = require('node-fetch');
+const Q = require('q');
 
 const UserDB = require('../models/users');
-
 const poolData = {
     UserPoolId: `${process.env.AWS_USER_POOL_ID}`,
     ClientId: `${process.env.AWS_CLIENT_ID}`
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 const pool_region = `${process.env.AWS_POOL_REGION}`;            
-const token = [];
 
 
 module.exports = 
@@ -76,14 +75,11 @@ module.exports =
         }
     },
     loginUser: async ({ email, password }) => {
+        const deferred = Q.defer();
+        const user = await UserDB.findOne({ email: email });
+        const userId = await user._id;
+
         try{
-            const user = await UserDB.findOne({ email: email });
-            const userId = await user._id;
-
-            if (!user) {
-                throw new Error('User does not exist!');
-            }
-
             const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
                 Username : email,
                 Password : password,
@@ -93,7 +89,7 @@ module.exports =
                 Pool : userPool
             };
             const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
+            
             cognitoUser
             .authenticateUser(authenticationDetails, {
                 onSuccess: function (session) {
@@ -103,63 +99,20 @@ module.exports =
                         refreshToken: session.getRefreshToken().getToken()
                     };
 
-                    // console.log('\naccess token:\n' + session.getAccessToken().getJwtToken());
-
-                    token.push(tokens.accessToken)
-                    console.log('\n\ntoken', tokens.accessToken)
-                    // console.log('\nid token\n' + session.getIdToken().getJwtToken());
-                    // console.log('\nrefresh token\n' + session.getRefreshToken().getToken());
+                    deferred.resolve({ userId: userId, token: tokens.accessToken });
                 },
                 onFailure: function(err) {
-                    console.log('\n---->AWS loginUser Error', err);
+                    deferred.reject(err.message);
                     return;                    
                 }
             })
 
-            return { userId: userId, token: token[0] }
-
+            return deferred.promise;
         }
         catch (err) {
-            console.log('\n----> GraphQL loginUser Error:\n', err);
-            throw err;
+            throw ('GraphQL loginUser Error:', err);
         }   
     },
-    isAuth: async (req, res, next) => {
-        const authHeader = req.get('Authorization');
-        console.log('------>authHeader:', authHeader);
-
-        if (!authHeader) {
-            req.isAuth = false;
-            return next();
-        }
-    
-        const token = authHeader.split(' ')[1];
-        console.log('------>TOKEN:', token);
-        if (!token || token === '') {
-            req.isAuth = false;
-            return next();
-        }
-    
-        let decodedToken;
-        try {
-            decodedToken = jwt.verify(token);
-        } 
-        catch (err) {
-            console.log('-------->3')
-            req.isAuth = false;
-            return next();
-        }
-    
-        if (!decodedToken) {
-            console.log('-------->4')
-            req.isAuth = false;
-            return next();
-        }
-    
-        req.isAuth = true;
-        // req.userId = decodedToken.userId;
-        next();
-    }
 
 }
 
