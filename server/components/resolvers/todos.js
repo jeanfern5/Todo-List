@@ -36,16 +36,16 @@ module.exports =
             throw err;
         } 
     },
-    createTodo: async (args) => {
+    createTodo: async (args, req) => {
         const newTodo = new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
-            user: '5cb75afbc5b650015417c073' 
+            user: '5cb908a22206d9163ceb0e1f' 
         });
 
         try {
-            const userExists = await UserDB.findById('5cb75afbc5b650015417c073');
+            const userExists = await UserDB.findById('5cb908a22206d9163ceb0e1f');
             const todoExists = await TodoDB.findOne({ title: args.todoInput.title });
 
             if (!userExists) {

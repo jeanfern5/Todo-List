@@ -46,7 +46,7 @@ const reformatResults = todo => {
 
 
 
-module.exports ={
+module.exports = {
     dateToString,
     todos, 
     user, 

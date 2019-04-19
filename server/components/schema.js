@@ -25,7 +25,7 @@ module.exports = buildSchema(`
     }
     type AuthData {
         userId: ID!
-        token: String
+        token: String!
     }
     type RootQuery {
         getTodos: [Todo!]!
