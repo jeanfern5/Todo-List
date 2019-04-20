@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import styled from 'styled-components';
@@ -7,7 +7,6 @@ import { Auth } from "aws-amplify";
 
 
 import Routes from "./Routes";
-import withRouter from "../node_modules/react-router-dom/withRouter";
 
 
 class App extends Component {

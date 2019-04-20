@@ -40,34 +40,46 @@ export default class Signup extends Component {
       const newUser = await Auth.signUp({
         username: this.state.email,
         password: this.state.password
-      }); 
+      });
       this.setState({
         newUser
       });
 
       const requestBody = {
-        query: `
-            mutation {
-                signupUser(userInput: { email:"${this.state.email}", password:"${this.state.password}" }) {
-                    _id
-                    email
-                }
-            }
+          query: `
+          mutation {
+              signupUser(userInput: { email: "${this.state.email}", password: "${this.state.password}" }) {
+                  _id
+                  email
+              }
+          }
         `
-      };
+      }
 
       fetch('http://localhost:8080/graphql', {
-          method: 'POST',
-          body: JSON.stringify(requestBody), 
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      });
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+          'Content-Type': 'application/json'
+      }
+      })
+      .then(res => {
+        if ((res.status !== 200) && (res.status !== 201)) {
+            throw new Error('Signup Failed!');
+        }
+
+        return res.json();
+      })
+      .then(resData => {
+        console.log('Signup Data:', resData);
+      })
+      .catch(err => {
+          console.log('Signup Error:', err);
+      })
 
       alert('Sent Email Verification Link')
       this.props.history.push("/login");
-    } 
-    catch (err) {
+    } catch (err) {
       alert(err.message);
     }
   
