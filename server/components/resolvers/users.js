@@ -40,33 +40,40 @@ module.exports =
                 throw new Error('User already exists.')
             }
 
-            async function AWS_Auth(){
-                //if user does not exist, then it adds user's account into AWS Cognito
-                await userPool
-                .signUp(email, password, attributeList, null, async function (err, result) {
-                    if (err) {
-                        console.log('\n---->AWS Error', err);
-                    }else{
-                    cognitoUser = result.user;
-                    console.log('user name is ' + cognitoUser.username);
-                    MongoDB();
-                    }
-                
-                })            
-            }
-
-            async function MongoDB(){
-                    console.log("ran mongo")
-                    const createdUser = await newUser
+            const createdUser = await newUser
                     .save()
                     .then(result => {
                         console.log('\n-----> signupUser:\n', result);
                         return result;
                     })
-                    return createdUser; 
+                    return createdUser;
+
+            // async function AWS_Auth(){
+            //     //if user does not exist, then it adds user's account into AWS Cognito
+            //     await userPool
+            //     .signUp(email, password, attributeList, null, async function (err, result) {
+            //         if (err) {
+            //             console.log('\n---->AWS Error', err);
+            //         }else{
+            //         cognitoUser = result.user;
+            //         console.log('user name is ' + cognitoUser.username);
+            //         MongoDB();
+            //         }
+                
+            //     })            
+            // }
+
+            // async function MongoDB(){
+            //         const createdUser = await newUser
+            //         .save()
+            //         .then(result => {
+            //             console.log('\n-----> signupUser:\n', result);
+            //             return result;
+            //         })
+            //         return createdUser; 
                
-            }
-            AWS_Auth();
+            // }
+            // AWS_Auth();
         
         }
         catch (err) {

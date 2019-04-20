@@ -13,7 +13,6 @@ export default class Signup extends Component {
       email: "",
       password: "",
       confirmPassword: "",
-      confirmationCode: "",
       newUser: null
     };
   }
@@ -24,10 +23,6 @@ export default class Signup extends Component {
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
     );
-  }
-
-  validateConfirmationForm() {
-    return this.state.confirmationCode.length > 0;
   }
 
   handleChange = event => {
@@ -45,14 +40,34 @@ export default class Signup extends Component {
       const newUser = await Auth.signUp({
         username: this.state.email,
         password: this.state.password
-      });
+      }); 
       this.setState({
         newUser
       });
 
+      const requestBody = {
+        query: `
+            mutation {
+                signupUser(userInput: { email:"${this.state.email}", password:"${this.state.password}" }) {
+                    _id
+                    email
+                }
+            }
+        `
+      };
+
+      fetch('http://localhost:8080/graphql', {
+          method: 'POST',
+          body: JSON.stringify(requestBody), 
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+
       alert('Sent Email Verification Link')
       this.props.history.push("/login");
-    } catch (err) {
+    } 
+    catch (err) {
       alert(err.message);
     }
   

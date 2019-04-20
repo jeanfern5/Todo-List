@@ -1,22 +1,3 @@
-// import React, { Component } from 'react';
-// import styled from 'styled-components';
-
-// import NavBar from './components/NavBar';
-// import Todo from './components/Todo/RootTodo';
-// import Footer from './components/Footer';
-
-// export default class App extends Component {
-//   render() {
-//     return (
-//       <AppContainer>
-//         <NavBar />
-//         <Todo />
-//         <Footer />
-//       </AppContainer>
-//     );
-//   }
-// }
-
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
@@ -25,7 +6,6 @@ import styled from 'styled-components';
 import { Auth } from "aws-amplify";
 
 
-// import { OuterContainer } from './Styling/globalStyling';
 import Routes from "./Routes";
 import withRouter from "../node_modules/react-router-dom/withRouter";
 
