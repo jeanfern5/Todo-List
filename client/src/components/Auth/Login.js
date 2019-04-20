@@ -35,6 +35,40 @@ export default class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
+
+      const requestBody = {
+        query: `
+        query {
+            loginUser(email: "${this.state.email}", password: "${this.state.password}") {
+                userId
+            }
+        }
+      `
+    }
+
+    fetch('http://localhost:8080/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        .then(res => {
+            console.log('---->', res)
+          if ((res.status !== 200) && (res.status !== 201)) {
+              throw new Error('Login Failed!');
+          }
+  
+          return res.json();
+        })
+        .then(resData => {
+          console.log('Login Data:', resData);
+        })
+        .catch(err => {
+            console.log('Login Error:', err);
+        })
+
+
       this.props.history.push("/");
     } catch (e) {
       alert(e.message);

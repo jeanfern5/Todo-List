@@ -46,7 +46,8 @@ module.exports =
                         console.log('\n-----> signupUser:\n', result);
                         return result;
                     })
-                    return createdUser;
+
+            return createdUser;
 
             // async function AWS_Auth(){
             //     //if user does not exist, then it adds user's account into AWS Cognito
@@ -81,40 +82,45 @@ module.exports =
             throw err;
         }
     },
-    loginUser: async ({ email, password }) => {
-        const deferred = Q.defer();
+    loginUser: async ({ email }) => {
+        // const deferred = Q.defer();
         const user = await UserDB.findOne({ email: email });
-        const userId = await user._id;
-
         try{
-            const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-                Username : email,
-                Password : password,
-            });
-            const userData = {
-                Username : email,
-                Pool : userPool
-            };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+            if (!user) {
+                throw new Error('User does not exist!');
+              }
+
+            const userId = await user._id;
+            return { userId: userId };
+
+            // const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            //     Username : email,
+            //     Password : password,
+            // });
+            // const userData = {
+            //     Username : email,
+            //     Pool : userPool
+            // };
+            // const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
             
-            cognitoUser
-            .authenticateUser(authenticationDetails, {
-                onSuccess: function (session) {
-                    const tokens = {
-                        accessToken: session.getAccessToken().getJwtToken(),
-                        idToken: session.getIdToken().getJwtToken(),
-                        refreshToken: session.getRefreshToken().getToken()
-                    };
+            // cognitoUser
+            // .authenticateUser(authenticationDetails, {
+            //     onSuccess: function (session) {
+            //         const tokens = {
+            //             accessToken: session.getAccessToken().getJwtToken(),
+            //             idToken: session.getIdToken().getJwtToken(),
+            //             refreshToken: session.getRefreshToken().getToken()
+            //         };
 
-                    deferred.resolve({ userId: userId, token: tokens.accessToken });
-                },
-                onFailure: function(err) {
-                    deferred.reject(err.message);
-                    return;                    
-                }
-            })
+            //         deferred.resolve({ userId: userId, token: tokens.accessToken });
+            //     },
+            //     onFailure: function(err) {
+            //         deferred.reject(err.message);
+            //         return;                    
+            //     }
+            // })
 
-            return deferred.promise;
+            // return deferred.promise;
         }
         catch (err) {
             throw ('GraphQL loginUser Error:', err);
