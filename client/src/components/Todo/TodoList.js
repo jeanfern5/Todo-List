@@ -61,5 +61,6 @@ const TodoListContainer = styled.div`
     flex-direction: column;
     font-size: 0.7rem;
     height: 75%;
-    border: 1px solid green;
+    margin-bottom: 1rem;
+    border: 1px solid black;
 `;

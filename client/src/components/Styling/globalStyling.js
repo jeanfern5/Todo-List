@@ -11,13 +11,14 @@ export const OuterContainer = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-    min-height: 29.5rem;
-    padding: 5%;
+    min-height: 24rem;
+    padding: 0 5%;
 `;
 
 export const Heading = styled.h1`
     text-align: center;
     font-weight: bold;
-    font-size: 2rem;
-    padding: 5%;
+    font-size: 1.5rem;
+    padding: 0.5rem 5%;
+    border: 1px solid black;
 `;
