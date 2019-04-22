@@ -9,6 +9,7 @@ import Todo from './components/Todo/RootTodo';
 import ComponentRoute from './components/Routes';
 
 export default ({ childProps }) =>
+
   <Switch>
     <ComponentRoute path="/" exact component={Home} props={childProps} />
     <ComponentRoute path="/login" exact component={Login} props={childProps} />

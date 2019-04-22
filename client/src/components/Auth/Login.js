@@ -54,7 +54,6 @@ export default class Login extends Component {
         }
         })
         .then(res => {
-            console.log('---->', res)
           if ((res.status !== 200) && (res.status !== 201)) {
               throw new Error('Login Failed!');
           }
@@ -69,7 +68,7 @@ export default class Login extends Component {
         })
 
 
-      this.props.history.push("/");
+      this.props.history.push("/todos");
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });

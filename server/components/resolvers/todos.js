@@ -36,22 +36,22 @@ module.exports =
             throw err;
         } 
     },
-    createTodo: async (args, req) => {
+    createTodo: async (args, req, res) => {
         if ((!req.isAuth) || (req.isAuth === undefined)){
-            console.log('---->!!!createTodo isAuth', req.isAuth, req);
+            console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
             throw new Error('Not Authenticated!');
         };
-        console.log('---->createTodo isAuth', req.isAuth);
+        console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
 
-        const newTodo = new TodoDB({
+        const newTodo = await new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
-            user: '5cb908a22206d9163ceb0e1f' 
+            user: req.userId
         });
 
         try {
-            const userExists = await UserDB.findById('5cb908a22206d9163ceb0e1f');
+            const userExists = await UserDB.findById(req.userId);
             const todoExists = await TodoDB.findOne({ title: args.todoInput.title });
 
             if (!userExists) {

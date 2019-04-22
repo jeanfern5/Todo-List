@@ -5,9 +5,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import styled from 'styled-components';
 import { Auth } from "aws-amplify";
 
-
 import Routes from "./Routes";
-
 
 class App extends Component {
   constructor(props) {

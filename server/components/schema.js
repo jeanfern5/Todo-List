@@ -17,14 +17,16 @@ module.exports = buildSchema(`
     type User {
         _id: ID!
         email: String!
+        password: String!
         createdTodos: [Todo!]
     }
     input UserInput {
         email: String!
-        password: String!
+        password: String
     }
     type LoginData {
-        userId: ID!
+        userId: ID
+        token: String!
     }
     type RootQuery {
         getTodos: [Todo!]!
@@ -35,7 +37,7 @@ module.exports = buildSchema(`
         createTodo(todoInput: TodoInput!): Todo
         updateTodo(todoId: ID!, todoInput: TodoInput!): Todo!
         deleteTodo(todoId: ID!): Todo!
-        signupUser(userInput: UserInput): User
+        signupUser(userInput: UserInput!): User
     }
     schema {
         query: RootQuery

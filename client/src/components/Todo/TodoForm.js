@@ -4,7 +4,7 @@ import LoaderButton from "../Auth/LoaderButton";
 
 import styled from 'styled-components';
 
-export default class NewNote extends Component {
+export default class TodoForm extends Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +31,51 @@ export default class NewNote extends Component {
     event.preventDefault();
 
     this.setState({ isLoading: true });
+    try{
+
+        const requestBody = {
+            query: `
+            mutation {
+                createTodo(todoInput: { title:"${this.state.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
+                    _id
+                    title
+                    description
+                    date
+                    user {
+                        _id
+                        email
+                    }
+                }
+            }
+          `
+        }
+    
+        fetch('http://localhost:8080/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+            })
+            .then(res => {
+              console.log('----->res', res)
+              if ((res.status !== 200) && (res.status !== 201)) {
+                  throw new Error('Create Todo Failed!');
+              }
+      
+              return res.json();
+            })
+            .then(resData => {
+              console.log('Create Todo Data:', resData);
+            })
+            .catch(err => {
+                console.log('Create Todo Error:', err);
+            })
+        
+    } catch(err) {
+        alert(err);
+        this.setState({ isLoading: false });
+    }
   }
 
   render() {
@@ -41,19 +86,17 @@ export default class NewNote extends Component {
             <FormControl
               onChange={this.handleChange}
               value={this.state.title}
-              componentClass="textarea"
+              type="text"
               placeholder="title"
-              style={{height:"2rem"}}
+              style={{height:"2rem", width:"110%"}}
             />
           </FormGroup>
           <FormGroup controlId="date">
             <FormControl
               onChange={this.handleChange}
               value={this.state.date}
-              componentClass="textarea"
-              placeholder="due date"
-              style={{height:"2rem"}}
-
+              type="date"
+              style={{height:"2rem", width:"87%", marginLeft:"12%"}}
             />
           </FormGroup>
         </InputTop>
