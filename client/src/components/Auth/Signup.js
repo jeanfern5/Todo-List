@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-import { Auth } from "aws-amplify";
 
 import LoaderButton from "./LoaderButton";
 
@@ -29,7 +28,7 @@ export default class Signup extends Component {
     this.setState({
       [event.target.id]: event.target.value
     });
-  }
+  };
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -37,14 +36,6 @@ export default class Signup extends Component {
     this.setState({ isLoading: true });
   
     try {
-      const newUser = await Auth.signUp({
-        username: this.state.email,
-        password: this.state.password
-      });
-      this.setState({
-        newUser
-      });
-
       const requestBody = {
           query: `
           mutation {
@@ -57,11 +48,11 @@ export default class Signup extends Component {
       }
 
       fetch('http://localhost:8080/graphql', {
-      method: 'POST',
-      body: JSON.stringify(requestBody),
-      headers: {
-          'Content-Type': 'application/json'
-      }
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json'
+        }
       })
       .then(res => {
         if ((res.status !== 200) && (res.status !== 201)) {
@@ -72,19 +63,20 @@ export default class Signup extends Component {
       })
       .then(resData => {
         console.log('Signup Data:', resData);
+        this.setState({ isLoading: false });
       })
       .catch(err => {
           console.log('Signup Error:', err);
       })
 
       alert('Sent Email Verification Link')
+
       this.props.history.push("/login");
     } catch (err) {
       alert(err.message);
     }
   
-    this.setState({ isLoading: false });
-  }
+  };
   
   render() {
     return (

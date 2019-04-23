@@ -27,23 +27,7 @@ module.exports =
 
         try {
             const attributeList = [];
-            attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name:"email",Value: email }));
-
-            // // checking if user already exists in MongoDB
-            // const userExists = await UserDB.findOne({ email: email });
-
-            // if (userExists){
-            //     throw new Error('User already exists.')
-            // }
-
-            // const createdUser = await newUser
-            //         .save()
-            //         .then(result => {
-            //             console.log('\n-----> signupUser:\n', result);
-            //             return result;
-            //         })
-
-            // return createdUser;
+            attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute({ Name:"email", Value: email }));
 
             async function AWS_Auth(){
                 //adding user's account into AWS Cognito
@@ -53,38 +37,37 @@ module.exports =
                         deferred.reject(err.message);
                     } 
                     else {
-                        const awsId = result.userSub;
+                        const awsId = await result.userSub;
 
                         MongoDB(awsId);
-                    }
-                })            
-            }
+                    };
+                });           
+            };
 
             async function MongoDB(id){
                 //if AWS Cognito is successful, then it adds the user to MongoDB
                 const newUser = new UserDB({
                     email: args.userInput.email,
-                    password: true, 
                     awsId: id
                 });
 
                 return await newUser
-                .save()
-                .then(result => {
-                    console.log('\n-----> signupUser:\n', result);
-                    deferred.resolve(result);
-                })
-                .catch(err => {
-                    deferred.reject(err.message);
-                })          
-            }
+                    .save()
+                    .then(result => {
+                        console.log('\n-----> signupUser:\n', result);
+                        deferred.resolve(result);
+                    })
+                    .catch(err => {
+                        deferred.reject(err.message);
+                    });     
+            };
 
             AWS_Auth();
             return deferred.promise;
         }
         catch (err) {
             throw ('GraphQL loginUser Error:', err);
-        }
+        };
     },
     loginUser: async ({ email, password }) => {
         const deferred = Q.defer();

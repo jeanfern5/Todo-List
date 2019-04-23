@@ -4,7 +4,6 @@ const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const jwt = require('jsonwebtoken');
 const Q = require('q');
-const  Auth  =  require("aws-amplify");
 const AWS = require('aws-sdk'); 
 
 const UserDB = require('../models/users');
