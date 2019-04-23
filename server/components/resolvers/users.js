@@ -1,13 +1,9 @@
 //GraphQL Users/Auth Resolver 
 //signs up a new user and logs in a user an existing user
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-const CognitoUserPool = AmazonCognitoIdentity.CognitoUserPool;
-const AWS = require('aws-sdk'); 
-const request = require('request');
-const jwkToPem = require('jwk-to-pem');
-const jwt = require('jsonwebtoken');
 global.fetch = require('node-fetch');
 const Q = require('q');
+const deferred = Q.defer();
 
 const UserDB = require('../models/users');
 
@@ -16,13 +12,11 @@ const poolData = {
     ClientId: `${process.env.AWS_CLIENT_ID}`
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-const pool_region = `${process.env.AWS_POOL_REGION}`;            
 
 
 module.exports = 
 {
     signupUser: async (args) => {
-        const deferred = Q.defer();
         const { email, password } = args.userInput;
 
         try {
@@ -38,7 +32,6 @@ module.exports =
                     } 
                     else {
                         const awsId = await result.userSub;
-
                         MongoDB(awsId);
                     };
                 });           
@@ -54,7 +47,6 @@ module.exports =
                 return await newUser
                     .save()
                     .then(result => {
-                        console.log('\n-----> signupUser:\n', result);
                         deferred.resolve(result);
                     })
                     .catch(err => {
@@ -70,7 +62,6 @@ module.exports =
         };
     },
     loginUser: async ({ email, password }) => {
-        const deferred = Q.defer();
         try{
             const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
                 Username : email,
@@ -99,15 +90,15 @@ module.exports =
                 onFailure: function(err) {
                     deferred.reject(err.message);
                 }
-            })
+            });
 
             return deferred.promise;
         }
         catch (err) {
             throw ('GraphQL loginUser Error:', err);
-        }   
+        };   
     },
 
-}
+};
 
 

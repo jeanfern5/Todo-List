@@ -3,31 +3,28 @@
 const TodoDB = require('../models/todos');
 const UserDB = require('../models/users');
 
-const { reformatResults, user } = require('./helpers')
-
-function checkAuth(req){
-    if ( (!req.isAuth) || (req.isAuth === undefined)){
-        console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
-        throw new Error('Not Authenticated!');
-    };    
-}
+const { reformatResults, user, checkAuth } = require('./helpers/helpers');
 
 module.exports = 
 {
-    getTodos: async (args) => {
+    getTodos: async (args, req) => {
+        checkAuth(req);
+
         try {
             const retrievedTodos = await TodoDB.find();
 
             return retrievedTodos.map(todo => {
                 return reformatResults(todo);
-            })    
+            });    
         }
         catch (err) {
             console.log('\n-----> GraphQL getTodos Error:\n', err);
             throw err;
-        } 
+        }; 
     },
     getSingleTodo: async (args) => {
+        checkAuth(req);
+
         try {
             const todoExists = await TodoDB.findById(args.todoId)
 
@@ -40,21 +37,10 @@ module.exports =
         catch (err) {
             console.log('\n-----> GraphQL getSingleTodo Error:\n', err);
             throw err;
-        } 
-    },
-    createTodo: async (args, req, res) => {
-        if ((!req.isAuth) || (req.isAuth === undefined)){
-            console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
-            throw new Error('Not Authenticated!');
         };
-        console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
-
-        const newTodo = await new TodoDB({
-            title: args.todoInput.title,
-            description: args.todoInput.description,
-            date: new Date(args.todoInput.date),
-            user: req.userId
-        });
+    },
+    createTodo: async (args, req) => {
+        checkAuth(req);
 
         try {
             const user = await UserDB.findById(req.userId);
@@ -64,30 +50,38 @@ module.exports =
                 throw new Error('User not found.')
             }
             else if (todo){
-                throw new Error('Todo with that title already exists, try naming it differently.')
+                throw new Error('Todo with that title already exists.')
             }
 
+            const newTodo = await new TodoDB({
+                title: args.todoInput.title,
+                description: args.todoInput.description,
+                date: new Date(args.todoInput.date),
+                user: req.userId
+            });
+
             user.createdTodos.push(newTodo);
-            await user.save()
+            await user.save();
 
             return await newTodo
                 .save()
                 .then(result => {
                     return reformatResults(result);
-                })
+                });
         }
         catch (err) {
             console.log('\n----> GraphQL createTodo Error:\n', err);
             throw err; 
-        }
+        };
     },
     updateTodo: async (args) => {
+        checkAuth(req);
+
         try {
             const todo = await TodoDB.findById(args.todoId);
-            console.log('---->todo', todo);
 
             if (!todo) {
-                throw new Error('Todo not found.')
+                throw new Error('Todo not found.');
             }   
             
             await TodoDB
@@ -95,17 +89,18 @@ module.exports =
                     { _id: todo }, 
                     { date:  new Date(args.todoInput.date), 
                     description: args.todoInput.description }
-                )
-            
+                );
             
             return { _id: todo._id, title: todo.title, date: dateToString(args.todoInput.date), description: args.todoInput.description, user: user.bind(this, todo.user)};  
         }
         catch (err) {
             console.log('\n----> GraphQL updateTodo Error:\n', err);
             throw err; 
-        }
+        };
     },
     deleteTodo: async (args) => {
+        checkAuth(req);
+
         try {
             const todo = await TodoDB.findById(args.todoId);
 
@@ -120,7 +115,7 @@ module.exports =
         catch (err) {
             console.log('\n----> GraphQL deleteTodo Error:\n', err);
             throw err;
-        }
-    }
+        };
+    },
 
-}
+};

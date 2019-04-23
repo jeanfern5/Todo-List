@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
-import LoaderButton from "./LoaderButton";
+import LoaderButton from "../LoaderButton";
 
 export default class Signup extends Component {
   constructor(props) {
@@ -18,9 +18,9 @@ export default class Signup extends Component {
 
   validateForm() {
     return (
-      this.state.email.length > 0 &&
-      this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
+      (this.state.email.length > 0) &&
+      (this.state.password.length > 7) &&
+      (this.state.password === this.state.confirmPassword)
     );
   }
 
@@ -42,6 +42,7 @@ export default class Signup extends Component {
               signupUser(userInput: { email: "${this.state.email}", password: "${this.state.password}" }) {
                   _id
                   email
+                  awsId
               }
           }
         `
@@ -63,17 +64,17 @@ export default class Signup extends Component {
       })
       .then(resData => {
         console.log('Signup Data:', resData);
-        this.setState({ isLoading: false });
       })
       .catch(err => {
           console.log('Signup Error:', err);
       })
 
+      this.setState({ isLoading: false });
       alert('Sent Email Verification Link')
-
       this.props.history.push("/login");
     } catch (err) {
       alert(err.message);
+      this.setState({ isLoading: false });
     }
   
   };
@@ -108,6 +109,7 @@ export default class Signup extends Component {
         </FormGroup>
         <LoaderButton
           block
+          bsStyle="primary"
           bsSize="large"
           disabled={!this.validateForm()}
           type="submit"

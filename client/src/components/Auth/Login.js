@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 
-import LoaderButton from "./LoaderButton";
+import LoaderButton from "../LoaderButton";
 
 
 export default class Login extends Component {
@@ -18,7 +18,10 @@ export default class Login extends Component {
   }
 
   validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
+    return (
+      (this.state.email.length > 0) && 
+      (this.state.password.length > 7)
+    );
   }
 
   handleChange = event => {
@@ -41,6 +44,7 @@ export default class Login extends Component {
         query {
             loginUser(email: "${this.state.email}", password: "${this.state.password}") {
                 userId
+                token
             }
         }
       `
@@ -57,7 +61,7 @@ export default class Login extends Component {
           if ((res.status !== 200) && (res.status !== 201)) {
               throw new Error('Login Failed!');
           }
-  
+          
           return res.json();
         })
         .then(resData => {
@@ -67,8 +71,8 @@ export default class Login extends Component {
             console.log('Login Error:', err);
         })
 
-
-      this.props.history.push("/todos");
+      this.setState({ isLoading: false });
+      this.props.history.push("/");
     } catch (e) {
       alert(e.message);
       this.setState({ isLoading: false });
@@ -99,6 +103,7 @@ export default class Login extends Component {
           </FormGroup>
           <LoaderButton
             block
+            bsStyle="primary"
             bsSize="large"
             disabled={!this.validateForm()}
             type="submit"

@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { Auth } from "aws-amplify";
 
 import Routes from "./Routes";
+// import AuthContext from './components/Auth/auth-context';
+
 
 class App extends Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl } from "react-bootstrap";
-import LoaderButton from "../Auth/LoaderButton";
+import LoaderButton from "../LoaderButton";
 
 import styled from 'styled-components';
 
