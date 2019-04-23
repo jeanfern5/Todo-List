@@ -48,6 +48,7 @@ const reformatResults = todo => {
 
 //helps check that user is authenticated
 function checkAuth(req) {
+    console.log('Authentication', req.isAuth, req.userId)
     if ((!req.isAuth) || (req.isAuth === undefined)) {
         throw new Error('Not Authenticated!');
     };    

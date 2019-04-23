@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl } from "react-bootstrap";
-import LoaderButton from "../LoaderButton";
-
 import styled from 'styled-components';
+
+import LoaderButton from "../LoaderButton";
+import config from '../../config';
 
 export default class TodoForm extends Component {
   constructor(props) {
@@ -48,16 +49,16 @@ export default class TodoForm extends Component {
             }
           `
         }
-    
+
         fetch('http://localhost:8080/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + config.TOKEN
             }
             })
             .then(res => {
-              console.log('----->res', res)
               if ((res.status !== 200) && (res.status !== 201)) {
                   throw new Error('Create Todo Failed!');
               }

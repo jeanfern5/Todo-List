@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { Auth } from "aws-amplify";
 
 import Routes from "./Routes";
-// import AuthContext from './components/Auth/auth-context';
 
 
 class App extends Component {
@@ -15,9 +14,9 @@ class App extends Component {
   
     this.state = {
       isAuthenticated: false,
-      isAuthenticating: true
+      isAuthenticating: true,
     };
-  }
+  };
 
   async componentDidMount() {
     try {
@@ -28,21 +27,26 @@ class App extends Component {
       if (e !== 'No current user') {
         alert(e);
       }
-    }
+    };
   
     this.setState({ isAuthenticating: false });
-  }
+  };
   
   userHasAuthenticated = authenticated => {
     this.setState({ isAuthenticated: authenticated });
-  }
+  };
 
   handleLogout = async event => {
     await Auth.signOut();
   
     this.userHasAuthenticated(false);
+    this.setState({ token:null, userId:null });
     this.props.history.push("/login");
-  }  
+  };
+  
+  login = (token, userId) => {
+    this.setState({ token:token, userId:userId });
+  };
 
   render() {
     const childProps = {
@@ -76,6 +80,7 @@ class App extends Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+ 
         <Routes childProps={childProps} />
       </AppContainer>
     );
@@ -84,6 +89,8 @@ class App extends Component {
 
 export default withRouter(App);
   
+
+
 
 
 
