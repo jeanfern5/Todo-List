@@ -18,25 +18,11 @@ const pool_region = `${process.env.AWS_POOL_REGION}`;
 
 // const { ValidateToken } = require('./helpers')
 
-module.exports =  async (req, res, next) => {
+
+async function call_aws(token, req){
     const deferred = Q.defer();
-    let userId;
     let verifiedToken;
-
-
-    const authHeader = await req.get('Authorization');
-    if (!authHeader) {
-        req.isAuth = false;
-        return next();
-    }
-
-    const token = await authHeader.split(' ')[1];
-    if (!token || token === '') {
-        req.isAuth = false;
-        return next();
-    }
-
-    
+    let userId;
     request({
         url: `https://cognito-idp.${pool_region}.amazonaws.com/${poolData.UserPoolId}/.well-known/jwks.json`,
         json: true
@@ -77,13 +63,11 @@ module.exports =  async (req, res, next) => {
             } catch (err) {
                 req.isAuth = false; 
                 deferred.resolve(req.isAuth);
-                return next();
             }
 
             if (!verifiedToken) {
                 req.isAuth = false;
                 deferred.resolve(req.isAuth);
-                return next();
             } else {
                 req.isAuth = true;
 
@@ -91,7 +75,7 @@ module.exports =  async (req, res, next) => {
                 const user =  await UserDB.findOne({ password: awsId });
                 userId = await user._id;
 
-                deferred.resolve(req.isAuth, userId)
+                deferred.resolve({'is_auth' : req.isAuth, 'userId' : userId});
                 console.log('======>1', req.isAuth, userId)
             }  
 
@@ -101,14 +85,32 @@ module.exports =  async (req, res, next) => {
             deferred.resolve(req.isAuth);
         }
         
-        console.log('---->2', req.isAuth, userId);
+         });
         return deferred.promise;
-    });
+    }
+
+module.exports =  async (req, res, next) => {
     
+    
+    
+    const authHeader = await req.get('Authorization');
+    if (!authHeader) {
+        req.isAuth = false;
+        return next();
+    }
+
+    const token = await authHeader.split(' ')[1];
+    if (!token || token === '') {
+        req.isAuth = false;
+        return next();
+    }
+
+    let aws_res = await call_aws(token, req);
+    console.log("aws_res", aws_res);
+        
+    req.isAuth = aws_res.is_auth;
+    req.userId = aws_res.userId;
     // const user =  await UserDB.findOne({ password: awsId });
     // userId = await user._id;
-    
-    console.log('---->3', req.isAuth, userId);
-
-    next();
+    return next();
 };

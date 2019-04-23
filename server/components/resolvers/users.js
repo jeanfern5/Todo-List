@@ -64,7 +64,8 @@ module.exports =
                 //if AWS Cognito is successful, then it adds the user to MongoDB
                 const newUser = new UserDB({
                     email: args.userInput.email,
-                    password: id
+                    password: true, 
+                    awsId: id
                 });
 
                 return await newUser

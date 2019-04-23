@@ -5,6 +5,12 @@ const UserDB = require('../models/users');
 
 const { reformatResults, user } = require('./helpers')
 
+function checkAuth(req){
+    if ( (!req.isAuth) || (req.isAuth === undefined)){
+        console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
+        throw new Error('Not Authenticated!');
+    };    
+}
 
 module.exports = 
 {
@@ -37,21 +43,21 @@ module.exports =
         } 
     },
     createTodo: async (args, req, res) => {
-        // if ((!req.isAuth) || (req.isAuth === undefined)){
-        //     console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
-        //     throw new Error('Not Authenticated!');
-        // };
-        // console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
+        if ((!req.isAuth) || (req.isAuth === undefined)){
+            console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
+            throw new Error('Not Authenticated!');
+        };
+        console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
 
         const newTodo = await new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
-            user: "5cbe2b20dbb06b24e4721d4f"
+            user: req.userId
         });
 
         try {
-            const user = await UserDB.findById("5cbe2b20dbb06b24e4721d4f");
+            const user = await UserDB.findById(req.userId);
             const todo = await TodoDB.findOne({ title: args.todoInput.title });
             
             if (!user) {

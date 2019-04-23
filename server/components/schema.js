@@ -17,7 +17,7 @@ module.exports = buildSchema(`
     type User {
         _id: ID!
         email: String!
-        password: String!
+        awsId: String!
         createdTodos: [Todo!]
     }
     input UserInput {
@@ -25,7 +25,7 @@ module.exports = buildSchema(`
         password: String
     }
     type LoginData {
-        userId: ID
+        userId: ID!
         token: String!
     }
     type RootQuery {

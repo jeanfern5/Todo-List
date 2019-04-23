@@ -7,7 +7,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    password: {
+    awsId: {
         type: String,
         required: true
     },
