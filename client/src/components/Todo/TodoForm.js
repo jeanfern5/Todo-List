@@ -17,7 +17,7 @@ export default class TodoForm extends Component {
   }
 
   validateForm() {
-    return this.state.title.length > 0;
+    return (this.state.title.length > 0) && (this.state.date.length > 0);
   }
 
   handleChange = event => {
@@ -29,10 +29,9 @@ export default class TodoForm extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-
     this.setState({ isLoading: true });
-    try{
 
+    try{
         const requestBody = {
             query: `
             mutation {
@@ -66,12 +65,17 @@ export default class TodoForm extends Component {
               return res.json();
             })
             .then(resData => {
-              console.log('Create Todo Data:', resData);
+                if (resData.errors) {
+                 alert(resData.errors[0].message);
+                }
+
+                this.setState({ isLoading: false }); 
+                console.log('Create Todo Data:', resData);
             })
             .catch(err => {
                 console.log('Create Todo Error:', err);
             })
-        
+
     } catch(err) {
         alert(err);
         this.setState({ isLoading: false });
@@ -113,13 +117,13 @@ export default class TodoForm extends Component {
         <LoaderButton
         block
         bsStyle="primary"
-        bsSize="large"
+        bsSize="small"
         disabled={!this.validateForm()}
         type="submit"
         isLoading={this.state.isLoading}
-        text="Create"
+        text="Create Todo"
         loadingText="Creating…"
-        style={{height:"1.5rem", lineHeight:"0"}}
+        style={{height:"1.5rem", lineHeight:"0", fontSize:"1rem"}}
         />
       </form>
     );

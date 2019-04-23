@@ -92,7 +92,7 @@ module.exports =  async (req, res, next) => {
                 userId = await user._id;
 
                 deferred.resolve(req.isAuth, userId)
-                console.log('======>1', userId, req.isAuth)
+                console.log('======>1', req.isAuth, userId)
             }  
 
         } else {
@@ -101,14 +101,14 @@ module.exports =  async (req, res, next) => {
             deferred.resolve(req.isAuth);
         }
         
-        console.log('---->2', userId, req.isAuth);
+        console.log('---->2', req.isAuth, userId);
         return deferred.promise;
     });
     
     // const user =  await UserDB.findOne({ password: awsId });
     // userId = await user._id;
     
-    console.log('---->3', userId, req.isAuth);
+    console.log('---->3', req.isAuth, userId);
 
     next();
 };

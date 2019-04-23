@@ -37,32 +37,32 @@ module.exports =
         } 
     },
     createTodo: async (args, req, res) => {
-        if ((!req.isAuth) || (req.isAuth === undefined)){
-            console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
-            throw new Error('Not Authenticated!');
-        };
-        console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
+        // if ((!req.isAuth) || (req.isAuth === undefined)){
+        //     console.log('---->4 !createTodo isAuth', req.isAuth, req.userId);
+        //     throw new Error('Not Authenticated!');
+        // };
+        // console.log('---->4 createTodo isAuth', req.isAuth, req.userId);
 
         const newTodo = await new TodoDB({
             title: args.todoInput.title,
             description: args.todoInput.description,
             date: new Date(args.todoInput.date),
-            user: req.userId
+            user: "5cbe2b20dbb06b24e4721d4f"
         });
 
         try {
-            const userExists = await UserDB.findById(req.userId);
-            const todoExists = await TodoDB.findOne({ title: args.todoInput.title });
-
-            if (!userExists) {
+            const user = await UserDB.findById("5cbe2b20dbb06b24e4721d4f");
+            const todo = await TodoDB.findOne({ title: args.todoInput.title });
+            
+            if (!user) {
                 throw new Error('User not found.')
             }
-            else if (todoExists){
+            else if (todo){
                 throw new Error('Todo with that title already exists, try naming it differently.')
             }
 
-            userExists.createdTodos.push(newTodo);
-            await userExists.save()
+            user.createdTodos.push(newTodo);
+            await user.save()
 
             return await newTodo
                 .save()
