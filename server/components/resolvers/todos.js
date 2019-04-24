@@ -8,7 +8,6 @@ const { reformatResults, user, checkAuth } = require('./helpers/helpers');
 module.exports = 
 {
     getTodos: async (args, req) => {
-        checkAuth(req);
 
         try {
             const retrievedTodos = await TodoDB.find();
@@ -23,7 +22,6 @@ module.exports =
         }; 
     },
     getSingleTodo: async (args) => {
-        checkAuth(req);
 
         try {
             const todoExists = await TodoDB.findById(args.todoId)

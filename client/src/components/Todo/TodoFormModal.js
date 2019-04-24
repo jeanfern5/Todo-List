@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
 
+
 export default class TodoForm extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +18,59 @@ export default class TodoForm extends Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchTodos();
+  };
+
+
+  fetchTodos() {
+    const requestBody = {
+        query: `
+        query {
+            getTodos {
+                _id
+                title
+                description
+                date
+                user {
+                    _id
+                    email
+                }
+            }
+        }
+      `
+    }
+
+    fetch('http://localhost:8080/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        })
+        .then(res => {
+          if ((res.status !== 200) && (res.status !== 201)) {
+              throw new Error('Retrieve Todo Failed!');
+          }
+  
+          return res.json();
+        })
+        .then(resData => {
+            if (resData.errors) {
+             alert(resData.errors[0].message);
+            }
+
+            const todos = resData.data.getTodos;
+
+            this.setState({ todos: todos });
+
+            console.log('Retrieve Todo Data:', resData);
+        })
+        .catch(err => {
+            console.log('Retrieve Todo Error:', err);
+        })
+};
+
   validateForm() {
     return (this.state.title.length > 0) && (this.state.date.length > 0);
   }
@@ -26,7 +80,6 @@ export default class TodoForm extends Component {
       [event.target.id]: event.target.value
     });
   }
-
 
   handleSubmit = async event => {
     event.preventDefault();
@@ -48,7 +101,7 @@ export default class TodoForm extends Component {
                 }
             }
           `
-        }
+        };
 
         fetch('http://localhost:8080/graphql', {
             method: 'POST',
@@ -70,6 +123,7 @@ export default class TodoForm extends Component {
                  alert(resData.errors[0].message);
                 }
 
+                this.fetchTodos();
                 this.setState({ isLoading: false }); 
                 console.log('Create Todo Data:', resData);
             })
@@ -81,7 +135,7 @@ export default class TodoForm extends Component {
         alert(err);
         this.setState({ isLoading: false });
     }
-  }
+  };
 
   render() {
     return (

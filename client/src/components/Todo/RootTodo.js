@@ -3,7 +3,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 
 import TodoList from './TodoList';
-import TodoForm from './TodoForm';
+import TodoForm from './TodoFormModal';
 import { ContentContainer, Heading } from '../Styling/globalStyling';
 
 
@@ -11,28 +11,62 @@ export default class TodoContainer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      todos:[
-        {
-          _id: 1528817077286,
-          title: 'Organize Garage',
-          description: "cleaning..............",
-          date: '4/20/2019',
-        },
-        {
-          _id: 1528817084358,
-          title: 'Bake Cookies',
-          description: "chocolate chip..............",
-          date: '4/15/2019',
-        },
-        {
-          _id: 1528817084350,
-          title: 'Do Laundry',
-          description: "sort by colors..............",
-          date: '4/16/2019',
-        }
-      ],
+      todos:[],
     }
   };
+
+  componentDidMount() {
+    this.fetchTodos();
+  };
+
+
+fetchTodos() {
+    const requestBody = {
+        query: `
+        query {
+            getTodos {
+                _id
+                title
+                description
+                date
+                user {
+                    _id
+                    email
+                }
+            }
+        }
+      `
+    }
+
+    fetch('http://localhost:8080/graphql', {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+        })
+        .then(res => {
+          if ((res.status !== 200) && (res.status !== 201)) {
+              throw new Error('Retrieve Todo Failed!');
+          }
+  
+          return res.json();
+        })
+        .then(resData => {
+            if (resData.errors) {
+             alert(resData.errors[0].message);
+            }
+
+            const todos = resData.data.getTodos;
+
+            this.setState({ todos: todos });
+
+            console.log('Retrieve Todo Data:', resData);
+        })
+        .catch(err => {
+            console.log('Retrieve Todo Error:', err);
+        })
+}
 
   onDragEnd = result => {
     //TODO: reorder columns
@@ -51,3 +85,4 @@ export default class TodoContainer extends Component {
   };
 
 };
+

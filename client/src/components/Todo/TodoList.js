@@ -5,36 +5,6 @@ import { Droppable } from 'react-beautiful-dnd';
 import TodoItem from './TodoItem';
 
 export default class TodoList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: false,
-            todos: []
-        }
-    }
-
-    // componentDidMount() {
-  
-    // }
-
-    // getTodos = () => {
-    //     this.setState({ isLoading: true });
-
-    //     const reqBody = {
-    //         query: `
-    //             query {
-    //                 getTodos {
-    //                     _id
-    //                     title
-    //                     description
-    //                     date
-    //                 }
-    //             }
-    //         `
-    //     }
-    // }
-
-      
 
     render() {
         return(
@@ -51,9 +21,9 @@ export default class TodoList extends Component {
                     </TodoListContainer>
                 )}
             </Droppable>
-        )
-    }
-}
+        );
+    };
+};
 
 
 const TodoListContainer = styled.div`
