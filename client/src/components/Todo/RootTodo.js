@@ -5,6 +5,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import TodoList from './TodoList';
 import TodoForm from './TodoFormModal';
 import { ContentContainer, Heading } from '../Styling/globalStyling';
+import { ButtonToolbar, Button } from '../../../node_modules/react-bootstrap';
 
 
 export default class TodoContainer extends Component {
@@ -12,6 +13,7 @@ export default class TodoContainer extends Component {
     super(props);
     this.state = {
       todos:[],
+      modalShows: false,
     }
   };
 
@@ -73,16 +75,34 @@ fetchTodos() {
   }
 
   render() {
+    let modalClose = () => this.setState({ modalShows: false});
+
     return (
       <ContentContainer onDragEnd={this.onDragEnd}>
         <Heading>Todo List</Heading>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <TodoList todos={this.state.todos} />
         </DragDropContext>
-        <TodoForm />
+        <ButtonToolbar>
+          <Button
+          variant="primary"
+          style={{ width:'98.4%' }}
+          onClick={() => this.setState({ modalShows: true })}
+          >
+            Add New Todo Here!
+          </Button>
+          <TodoForm 
+          show={ this.state.modalShows }
+          onHide={ modalClose }
+          />
+        </ButtonToolbar>
       </ContentContainer>
     );
   };
 
 };
+
+
+
+
 

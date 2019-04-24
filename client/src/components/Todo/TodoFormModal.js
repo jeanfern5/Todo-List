@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl } from "react-bootstrap";
+import { FormGroup, FormControl, Modal } from "react-bootstrap";
 import styled from 'styled-components';
 
 import LoaderButton from "../LoaderButton";
@@ -139,15 +139,20 @@ export default class TodoForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <InputTop>
+      <Modal
+      {...this.props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      style={{ top:'20%' }}
+      >
+      <Form onSubmit={this.handleSubmit}>
           <FormGroup controlId="title">
             <FormControl
               onChange={this.handleChange}
               value={this.state.title}
               type="text"
               placeholder="title"
-              style={{height:"2rem", width:"110%"}}
             />
           </FormGroup>
           <FormGroup controlId="date">
@@ -155,39 +160,37 @@ export default class TodoForm extends Component {
               onChange={this.handleChange}
               value={this.state.date}
               type="date"
-              style={{height:"2rem", width:"87%", marginLeft:"12%"}}
             />
           </FormGroup>
-        </InputTop>
         <FormGroup controlId="description">
         <FormControl
             onChange={this.handleChange}
             value={this.state.description}
             componentClass="textarea"
-            placeholder="description"
-            style={{height:"3rem"}}
+            placeholder="description..."
+            style={{height:"7rem"}}
 
         />
         </FormGroup>
         <LoaderButton
         block
         bsStyle="primary"
-        bsSize="small"
+        bsSize="large"
         disabled={!this.validateForm()}
         type="submit"
         isLoading={this.state.isLoading}
         text="Create Todo"
         loadingText="Creating…"
-        style={{height:"1.5rem", lineHeight:"0", fontSize:"1rem"}}
+        onClick={this.props.onHide}
         />
-      </form>
+      </Form>
+      </Modal>
     );
   }
 }
 
 
-const InputTop = styled.div`
-    display: flex;
-    flex-direction: row;
+const Form = styled.form`
+    padding: 1rem;
 `;
 

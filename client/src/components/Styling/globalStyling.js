@@ -11,7 +11,7 @@ export const OuterContainer = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-    min-height: 24rem;
+    min-height: 31rem;
     padding: 0 5%;
 `;
 

@@ -33,4 +33,5 @@ const TodoListContainer = styled.div`
     height: 75%;
     margin-bottom: 1rem;
     border: 1px solid black;
+    overflow-y: scroll;
 `;
