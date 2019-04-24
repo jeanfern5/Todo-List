@@ -6,6 +6,7 @@ import TodoList from './TodoList';
 import TodoForm from './TodoFormModal';
 import { ContentContainer, Heading } from '../Styling/globalStyling';
 import { ButtonToolbar, Button } from '../../../node_modules/react-bootstrap';
+import config from '../../config';
 
 
 export default class TodoContainer extends Component {
@@ -31,10 +32,6 @@ fetchTodos() {
                 title
                 description
                 date
-                user {
-                    _id
-                    email
-                }
             }
         }
       `
@@ -45,6 +42,7 @@ fetchTodos() {
         body: JSON.stringify(requestBody),
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + config.TOKEN
         }
         })
         .then(res => {
@@ -68,7 +66,7 @@ fetchTodos() {
         .catch(err => {
             console.log('Retrieve Todo Error:', err);
         })
-}
+};
 
   onDragEnd = result => {
     //TODO: reorder columns
@@ -80,9 +78,11 @@ fetchTodos() {
     return (
       <ContentContainer onDragEnd={this.onDragEnd}>
         <Heading>Todo List</Heading>
+
         <DragDropContext onDragEnd={this.onDragEnd}>
           <TodoList todos={this.state.todos} />
         </DragDropContext>
+        
         <ButtonToolbar>
           <Button
           variant="primary"
@@ -92,6 +92,7 @@ fetchTodos() {
             Add New Todo Here!
           </Button>
           <TodoForm 
+          todos={this.state.todos}
           show={ this.state.modalShows }
           onHide={ modalClose }
           />

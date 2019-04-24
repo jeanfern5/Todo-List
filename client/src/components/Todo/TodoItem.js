@@ -19,12 +19,11 @@ export default class TodoItem extends Component {
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
                     >
+                        <p>{new Date(date).toLocaleDateString()}</p>
                         <p>{title}</p>
-                        <p>{description}</p>
-                        <p>{date}</p>
+                        <p>{(description.length > 0) ? "see notes" : "edit"}</p>
                     </TodoItemContainer>
                 )}
-                
             </Draggable> 
         )
     }

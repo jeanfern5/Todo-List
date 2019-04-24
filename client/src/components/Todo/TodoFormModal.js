@@ -14,62 +14,10 @@ export default class TodoForm extends Component {
       isLoading: null,
       title: "",
       description: "",
-      date: ""
+      date: "",
+      todos: []
     };
-  }
-
-  componentDidMount() {
-    this.fetchTodos();
   };
-
-
-  fetchTodos() {
-    const requestBody = {
-        query: `
-        query {
-            getTodos {
-                _id
-                title
-                description
-                date
-                user {
-                    _id
-                    email
-                }
-            }
-        }
-      `
-    }
-
-    fetch('http://localhost:8080/graphql', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-        })
-        .then(res => {
-          if ((res.status !== 200) && (res.status !== 201)) {
-              throw new Error('Retrieve Todo Failed!');
-          }
-  
-          return res.json();
-        })
-        .then(resData => {
-            if (resData.errors) {
-             alert(resData.errors[0].message);
-            }
-
-            const todos = resData.data.getTodos;
-
-            this.setState({ todos: todos });
-
-            console.log('Retrieve Todo Data:', resData);
-        })
-        .catch(err => {
-            console.log('Retrieve Todo Error:', err);
-        })
-};
 
   validateForm() {
     return (this.state.title.length > 0) && (this.state.date.length > 0);
@@ -95,8 +43,7 @@ export default class TodoForm extends Component {
                     description
                     date
                     user {
-                        _id
-                        email
+                      _id
                     }
                 }
             }
@@ -123,9 +70,23 @@ export default class TodoForm extends Component {
                  alert(resData.errors[0].message);
                 }
 
-                this.fetchTodos();
+                this.setState(prevState => {
+                  const updatedTodos = [...prevState.todos];
+                
+                  updatedTodos.push({
+                    _id: resData.data.createTodo._id,
+                    title: resData.data.createTodo.title,
+                    date: resData.data.createTodo.date,
+                    description: resData.data.createTodo.description,
+                    user: {
+                      _id: resData.data.createTodo.user._id
+                    }
+                  });
+                  return { todos: updatedTodos };
+                });
+
                 this.setState({ isLoading: false }); 
-                console.log('Create Todo Data:', resData);
+                console.log('Create Todo Data:', this.state.todos);
             })
             .catch(err => {
                 console.log('Create Todo Error:', err);
@@ -137,13 +98,14 @@ export default class TodoForm extends Component {
     }
   };
 
+
   render() {
     return (
       <Modal
       {...this.props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centered
+      centered="true"
       style={{ top:'20%' }}
       >
       <Form onSubmit={this.handleSubmit}>
