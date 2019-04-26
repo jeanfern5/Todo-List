@@ -4,9 +4,10 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import TodoList from './TodoList';
 import TodoForm from './TodoFormModal';
+import config from '../../config';
 import { ContentContainer, Heading } from '../Styling/globalStyling';
 import { ButtonToolbar, Button } from '../../../node_modules/react-bootstrap';
-import config from '../../config';
+import Spinner from "../Spinner/Spinner";
 
 
 export default class TodoContainer extends Component {
@@ -15,6 +16,8 @@ export default class TodoContainer extends Component {
     this.state = {
       todos:[],
       modalShows: false,
+      isLoading: false,
+      selectedTodo: null,
     }
   };
 
@@ -24,6 +27,8 @@ export default class TodoContainer extends Component {
 
 
 fetchTodos() {
+    this.setState({ isLoading: true });
+
     const requestBody = {
         query: `
         query {
@@ -59,12 +64,13 @@ fetchTodos() {
 
             const todos = resData.data.getTodos;
 
-            this.setState({ todos: todos });
+            this.setState({ todos: todos, isLoading: false });
 
             console.log('Retrieve Todo Data:', resData);
         })
         .catch(err => {
             console.log('Retrieve Todo Error:', err);
+            this.setState({ isLoading: false });
         })
 };
 
@@ -79,9 +85,11 @@ fetchTodos() {
       <ContentContainer onDragEnd={this.onDragEnd}>
         <Heading>Todo List</Heading>
 
+         { this.state.isLoading ? <Spinner /> : (
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <TodoList todos={this.state.todos} />
+          <TodoList todos={this.state.todos} onViewDetail={this.showDetailHandler} />
         </DragDropContext>
+        )}
         
         <ButtonToolbar>
           <Button
