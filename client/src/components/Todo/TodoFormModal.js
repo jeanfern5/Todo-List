@@ -11,11 +11,11 @@ export default class TodoForm extends Component {
     super(props);
 
     this.state = {
-      todos: this.props.todos,
       isLoading: null,
       title: "",
       description: "",
       date: "",
+      todos: this.props.todos,
     };
   };
 
@@ -131,7 +131,7 @@ export default class TodoForm extends Component {
             onChange={this.handleChange}
             value={this.state.description}
             componentClass="textarea"
-            placeholder="description..."
+            placeholder="notes..."
             style={{height:"7rem"}}
 
         />

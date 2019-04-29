@@ -89,7 +89,7 @@ fetchTodos() {
         )}
 
         {this.state.selectedTodo && (
-          <TodoItem show={this.state.modalShows} />
+          <TodoItem show={this.state.modalShows} todos={this.state.todos}/>
         )}
 
         <ButtonToolbar>

@@ -12,14 +12,13 @@ export default class TodoUpdate extends Component {
 
     this.state = {
       isLoading: null,
-      title: "",
       description: "",
       date: "",
     };
   };
 
   validateForm() {
-    return (this.state.title.length > 0) && (this.state.date.length > 0);
+    return (this.props.date.length > 0);
   }
 
   handleChange = event => {
@@ -36,7 +35,7 @@ export default class TodoUpdate extends Component {
         const requestBody = {
             query: `
             mutation {
-                createTodo(todoInput: { title:"${this.state.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
+                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
                     _id
                     title
                     description
@@ -59,9 +58,9 @@ export default class TodoUpdate extends Component {
             })
             .then(res => {
               if ((res.status !== 200) && (res.status !== 201)) {
-                  throw new Error('Create Todo Failed!');
+                  throw new Error('Update Todo Failed!');
               }
-      
+              console.log('Update Todo Data1:', res);
               return res.json();
             })
             .then(resData => {
@@ -69,26 +68,27 @@ export default class TodoUpdate extends Component {
                  alert(resData.errors[0].message);
                 }
 
-                this.setState(prevState => {
-                  const updatedTodos = [...prevState.todos];
+                // this.setState(prevState => {
+                //   const updatedTodos = [...prevState.todos];
                 
-                  updatedTodos.push({
-                    _id: resData.data.createTodo._id,
-                    title: resData.data.createTodo.title,
-                    date: resData.data.createTodo.date,
-                    description: resData.data.createTodo.description,
-                    user: {
-                      _id: resData.data.createTodo.user._id
-                    }
-                  });
-                  return { todos: updatedTodos };
-                });
+                //   updatedTodos.push({
+                //     _id: resData.data.updateTodo._id,
+                //     title: resData.data.updateTodo.title,
+                //     date: resData.data.updateTodo.date,
+                //     description: resData.data.updateTodo.description,
+                //     user: {
+                //       _id: resData.data.updateTodo.user._id
+                //     }
+                //   });
+                //   return { todos: updatedTodos };
+                // });
 
                 this.setState({ isLoading: false }); 
-                console.log('Create Todo Data:', this.state.todos);
+                console.log('Update Todo Data:', resData.data);
             })
             .catch(err => {
-                console.log('Create Todo Error:', err);
+                console.log('Update Todo Error:', err);
+                this.setState({ isLoading: false });
             })
 
     } catch(err) {
@@ -99,8 +99,6 @@ export default class TodoUpdate extends Component {
 
 
   render() {
-    console.log('------>Update1', this.props)
-    console.log('------>Update2', this.state)
     let formatDate = date => date.split('T')[0];
 
     return (
@@ -111,45 +109,43 @@ export default class TodoUpdate extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-      <Form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="title">
-            <FormControl
-              onChange={this.handleChange}
-              value={this.props.title}
-              type="text"
-              placeholder="title"
-            />
-          </FormGroup>
-          <FormGroup controlId="date">
-            <FormControl
-            
-              onChange={this.handleChange}
-              value={formatDate(this.props.date)}
-              type="date"
-            />
-          </FormGroup>
-        <FormGroup controlId="description">
-        <FormControl
-            onChange={this.handleChange}
-            value={this.props.description}
-            componentClass="textarea"
-            placeholder="description..."
-            style={{height:"7rem"}}
+        <Form onSubmit={this.handleSubmit}>
+            <Modal.Header>
+                <Modal.Title>{this.props.title}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <FormGroup controlId="date">
+                <FormControl
+                    onChange={this.handleChange}
+                    value={this.state.date.length > 0 ? this.state.date : formatDate(this.props.date)}
+                    type="date"
+                />
+                </FormGroup>
+                <FormGroup controlId="description">
+                <FormControl
+                    onChange={this.handleChange}
+                    value={this.state.description.length > 0 ? this.state.description : (this.props.description.length > 0 ? this.props.description : "")}
+                    componentClass="textarea"
+                    placeholder={this.props.description.length <= 0 ? "notes..." : ""}
+                    style={{height:"7rem"}}
 
-        />
-        </FormGroup>
-        <LoaderButton
-        block
-        bsStyle="primary"
-        bsSize="large"
-        disabled={!this.validateForm()}
-        type="submit"
-        isLoading={this.state.isLoading}
-        text="Update Todo"
-        loadingText="Updating..."
-        onClick={this.props.onHide}
-        />
-      </Form>
+                />
+                </FormGroup>
+            </Modal.Body>
+            <Modal.Footer>
+                <LoaderButton
+                block
+                bsStyle="primary"
+                bsSize="large"
+                disabled={!this.validateForm()}
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Update Todo"
+                loadingText="Updating..."
+                onClick={this.props.onHide}
+                />
+            </Modal.Footer>
+        </Form>
       </Modal>
     );
   }

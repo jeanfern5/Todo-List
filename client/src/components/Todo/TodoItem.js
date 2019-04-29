@@ -9,12 +9,14 @@ export default class TodoItem extends Component {
         super(props);
         this.state = {
           modalShows: false,
+          todos: this.props.todos
         };
     };
 
     render() {
-        const {title, description, date} = this.props.item;
-        let modalClose = () => this.setState({ modalShows: false});
+        const { title, description, date } = this.props.item;
+        const { todoId } = this.props;
+        let modalClose = () => this.setState({modalShows: false});
 
         return(
             <TodoItemContainer>
@@ -34,6 +36,7 @@ export default class TodoItem extends Component {
                         title={title}
                         description={description}
                         date={date}
+                        todo_id={todoId}
                         /> 
                     </ButtonToolbar>
                     :  
@@ -49,6 +52,7 @@ export default class TodoItem extends Component {
                         title={title}
                         description={description}
                         date={date}
+                        todo_id={todoId}
                         />
                     </ButtonToolbar>
                 }</div>

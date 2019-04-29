@@ -57,7 +57,7 @@ module.exports =
             throw err; 
         };
     },
-    updateTodo: async (args) => {
+    updateTodo: async (args, req) => {
         checkAuth(req);
 
         try {
@@ -74,7 +74,7 @@ module.exports =
                     description: args.todoInput.description }
                 );
             
-            return { _id: todo._id, title: todo.title, date: dateToString(args.todoInput.date), description: args.todoInput.description, user: user.bind(this, todo.user)};  
+            return { _id: todo._id, title: todo.title, date: args.todoInput.date, description: args.todoInput.description, user: user.bind(this, todo.user)};  
         }
         catch (err) {
             console.log('\n----> GraphQL updateTodo Error:\n', err);
