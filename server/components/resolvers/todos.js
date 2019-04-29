@@ -22,23 +22,6 @@ module.exports =
             throw err;
         }; 
     },
-    getSingleTodo: async (args, req) => {
-        checkAuth(req);
-
-        try {
-            const todoExists = await TodoDB.findById(args.todoId)
-
-            if (!todoExists) {
-                throw new Error('Todo not found.')
-            }
-
-            return reformatResults(todoExists);   
-        }
-        catch (err) {
-            console.log('\n-----> GraphQL getSingleTodo Error:\n', err);
-            throw err;
-        };
-    },
     createTodo: async (args, req) => {
         checkAuth(req);
 

@@ -6,12 +6,11 @@ import LoaderButton from "../LoaderButton";
 import config from '../../config';
 
 
-export default class TodoForm extends Component {
+export default class TodoUpdate extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      todos: this.props.todos,
       isLoading: null,
       title: "",
       description: "",
@@ -69,10 +68,10 @@ export default class TodoForm extends Component {
                 if (resData.errors) {
                  alert(resData.errors[0].message);
                 }
-                
+
                 this.setState(prevState => {
                   const updatedTodos = [...prevState.todos];
-
+                
                   updatedTodos.push({
                     _id: resData.data.createTodo._id,
                     title: resData.data.createTodo.title,
@@ -82,7 +81,6 @@ export default class TodoForm extends Component {
                       _id: resData.data.createTodo.user._id
                     }
                   });
-
                   return { todos: updatedTodos };
                 });
 
@@ -101,6 +99,9 @@ export default class TodoForm extends Component {
 
 
   render() {
+    console.log('------>Update1', this.props)
+    console.log('------>Update2', this.state)
+    let formatDate = date => date.split('T')[0];
 
     return (
       <Modal
@@ -114,22 +115,23 @@ export default class TodoForm extends Component {
           <FormGroup controlId="title">
             <FormControl
               onChange={this.handleChange}
-              value={this.state.title}
+              value={this.props.title}
               type="text"
               placeholder="title"
             />
           </FormGroup>
           <FormGroup controlId="date">
             <FormControl
+            
               onChange={this.handleChange}
-              value={this.state.date}
+              value={formatDate(this.props.date)}
               type="date"
             />
           </FormGroup>
         <FormGroup controlId="description">
         <FormControl
             onChange={this.handleChange}
-            value={this.state.description}
+            value={this.props.description}
             componentClass="textarea"
             placeholder="description..."
             style={{height:"7rem"}}
@@ -143,8 +145,8 @@ export default class TodoForm extends Component {
         disabled={!this.validateForm()}
         type="submit"
         isLoading={this.state.isLoading}
-        text="Create Todo"
-        loadingText="Creating…"
+        text="Update Todo"
+        loadingText="Updating..."
         onClick={this.props.onHide}
         />
       </Form>
