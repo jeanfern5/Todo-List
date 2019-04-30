@@ -36,7 +36,7 @@ export default class TodoUpdate extends Component {
         const requestBody = {
             query: `
             mutation {
-                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description || this.props.description}", date: "${this.state.date || this.props.date}" }) {
+                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description || this.props.description || " "}", date: "${this.state.date || this.props.date}" }) {
                     _id
                     title
                     description
@@ -101,9 +101,6 @@ export default class TodoUpdate extends Component {
 
   render() {
     let formatDate = date => date.split('T')[0];
-
-    console.log('------>Update1', this.props)
-    console.log('------>Update2', this.state)
 
     return (
       <Modal

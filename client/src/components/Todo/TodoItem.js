@@ -5,6 +5,7 @@ import { FaBars, FaTrashAlt } from 'react-icons/fa';
 
 import TodoUpdate from './TodoUpdateModal';
 import TodoDelete from './TodoDeleteModal';
+import ViewSingleTodo from './ViewSingleTodoModal';
 
 export default class TodoItem extends Component {
     constructor(props){
@@ -12,6 +13,7 @@ export default class TodoItem extends Component {
         this.state = {
           updateModalShows: false,
           deleteModalShows: false,
+          singleTodoModalShows: false,
           todos: this.props.todos
         };
     };
@@ -19,12 +21,25 @@ export default class TodoItem extends Component {
     render() {
         const { title, description, date } = this.props.item;
         const { todoId } = this.props;
-        let modalClose = () => this.setState({ updateModalShows: false, deleteModalShows: false});
+        let modalClose = () => this.setState({ updateModalShows: false, deleteModalShows: false, singleTodoModalShows: false });
 
         return(
             <TodoItemContainer>
-                <p>{new Date(date).toLocaleDateString()}</p>
-                <p>{title}</p>
+                <p
+                onClick={() => {this.setState({singleTodoModalShows: true})}}
+                >{new Date(date).toLocaleDateString()}</p>
+                <p
+                onClick={() => {this.setState({singleTodoModalShows: true})}}
+                >{title}</p>
+                <ViewSingleTodo
+                    show={this.state.singleTodoModalShows}
+                    onHide={modalClose}
+                    title={title}
+                    description={description}
+                    date={date}
+                    todo_id={todoId}
+                />
+
                 <ButtonToolbar>
                     <FaTrashAlt 
                     onClick={() => {this.setState({deleteModalShows: true})}}
@@ -36,6 +51,7 @@ export default class TodoItem extends Component {
                     todo_id={todoId}
                     />
                 </ButtonToolbar>
+
                 <ButtonToolbar>
                     <FaBars
                     onClick={() => {this.setState({updateModalShows: true})}}
@@ -50,7 +66,6 @@ export default class TodoItem extends Component {
                     />
                 </ButtonToolbar>
             </TodoItemContainer>
-                
         )
     }
 }

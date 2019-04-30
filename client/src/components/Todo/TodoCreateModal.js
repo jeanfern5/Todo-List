@@ -6,7 +6,7 @@ import LoaderButton from "../LoaderButton";
 import config from '../../config';
 
 
-export default class TodoForm extends Component {
+export default class TodoCreate extends Component {
   constructor(props) {
     super(props);
 
@@ -42,9 +42,6 @@ export default class TodoForm extends Component {
                     title
                     description
                     date
-                    user {
-                      _id
-                    }
                 }
             }
           `
@@ -63,6 +60,7 @@ export default class TodoForm extends Component {
                   throw new Error('Create Todo Failed!');
               }
       
+              console.log('--->HERE', res.status)
               return res.json();
             })
             .then(resData => {
@@ -70,27 +68,25 @@ export default class TodoForm extends Component {
                  alert(resData.errors[0].message);
                 }
                 
-                this.setState(prevState => {
-                  const updatedTodos = [...prevState.todos];
+                // this.setState(prevState => {
+                //   const updatedTodos = [...prevState.todos];
 
-                  updatedTodos.push({
-                    _id: resData.data.createTodo._id,
-                    title: resData.data.createTodo.title,
-                    date: resData.data.createTodo.date,
-                    description: resData.data.createTodo.description,
-                    user: {
-                      _id: resData.data.createTodo.user._id
-                    }
-                  });
+                //   updatedTodos.push({
+                //     _id: resData.data.createTodo._id,
+                //     title: resData.data.createTodo.title,
+                //     date: resData.data.createTodo.date,
+                //     description: resData.data.createTodo.description,
+                //   });
 
-                  return { todos: updatedTodos };
-                });
+                //   return { todos: updatedTodos };
+                // });
 
                 this.setState({ isLoading: false }); 
-                console.log('Create Todo Data:', this.state.todos);
+                console.log('Create Todo Data:', resData.data);
             })
             .catch(err => {
                 console.log('Create Todo Error:', err);
+                this.setState({ isLoading: false });
             })
 
     } catch(err) {
@@ -101,7 +97,6 @@ export default class TodoForm extends Component {
 
 
   render() {
-
     return (
       <Modal
       {...this.props}
@@ -110,44 +105,51 @@ export default class TodoForm extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-      <Form onSubmit={this.handleSubmit}>
-          <FormGroup controlId="title">
+        <Modal.Header closeButton></Modal.Header>
+        
+        <Modal.Body>
+          <Form onSubmit={this.handleSubmit}>
+              <FormGroup controlId="title">
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.title}
+                  type="text"
+                  placeholder="title"
+                />
+              </FormGroup>
+              <FormGroup controlId="date">
+                <FormControl
+                  onChange={this.handleChange}
+                  value={this.state.date}
+                  type="date"
+                />
+              </FormGroup>
+            <FormGroup controlId="description">
             <FormControl
-              onChange={this.handleChange}
-              value={this.state.title}
-              type="text"
-              placeholder="title"
-            />
-          </FormGroup>
-          <FormGroup controlId="date">
-            <FormControl
-              onChange={this.handleChange}
-              value={this.state.date}
-              type="date"
-            />
-          </FormGroup>
-        <FormGroup controlId="description">
-        <FormControl
-            onChange={this.handleChange}
-            value={this.state.description}
-            componentClass="textarea"
-            placeholder="notes..."
-            style={{height:"7rem"}}
+                onChange={this.handleChange}
+                value={this.state.description}
+                componentClass="textarea"
+                placeholder="notes..."
+                style={{height:"7rem"}}
 
-        />
-        </FormGroup>
-        <LoaderButton
-        block
-        bsStyle="primary"
-        bsSize="large"
-        disabled={!this.validateForm()}
-        type="submit"
-        isLoading={this.state.isLoading}
-        text="Create Todo"
-        loadingText="Creating…"
-        onClick={this.props.onHide}
-        />
-      </Form>
+            />
+            </FormGroup>
+
+            <Modal.Footer>
+              <LoaderButton
+              block
+              bsStyle="primary"
+              bsSize="large"
+              disabled={!this.validateForm()}
+              type="submit"
+              isLoading={this.state.isLoading}
+              text="Create Todo"
+              loadingText="Creating…"
+              onClick={this.props.onHide}
+              />
+            </Modal.Footer>
+          </Form>
+        </Modal.Body>
       </Modal>
     );
   }

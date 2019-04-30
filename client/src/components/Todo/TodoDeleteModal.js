@@ -92,7 +92,6 @@ export default class TodoDelete extends Component {
 
 
   render() {
-    console.log('---->Delete', this.props)
     return (
       <Modal
       {...this.props}

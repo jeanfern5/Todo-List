@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import TodoList from './TodoList';
-import TodoForm from './TodoFormModal';
-import TodoItem from './TodoItem';
+import TodoList from './TodoList'; //contains feature: displays all todos
+import TodoCreate from './TodoCreateModal'; //contains feature: adds a new todo
+import TodoItem from './TodoItem'; //contains feature: displays single todo, updates todo, and deletes todo
 import { ContentContainer, Heading } from '../Styling/globalStyling';
-import { ButtonToolbar, Button } from '../../../node_modules/react-bootstrap';
+import { ButtonToolbar, Button } from 'react-bootstrap';
 import config from '../../config';
 import Spinner from "../Spinner/Spinner";
 
@@ -77,7 +77,7 @@ fetchTodos() {
     this.setState({ selectedTodo: true })
   };
 
-  render() {
+  renderTodos() {
     let modalClose = () => this.setState({ modalShows: false });
 
     return (
@@ -100,13 +100,30 @@ fetchTodos() {
           >
             Add New Todo Here!
           </Button>
-          <TodoForm 
+          <TodoCreate
           todos={this.state.todos}
           show={this.state.modalShows}
           onHide={modalClose}
           />
         </ButtonToolbar>
       </ContentContainer>
+    );
+  };
+
+  renderLanding() {
+    return (
+      <div>
+        <h1>Todo App</h1>
+        <p>A simple way to keep track of all your todos.</p>
+      </div>
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        {this.props.isAuthenticated ? this.renderTodos() : this.renderLanding()}
+      </div>
     );
   };
 

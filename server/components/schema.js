@@ -30,6 +30,7 @@ module.exports = buildSchema(`
     }
     type RootQuery {
         getTodos: [Todo!]!
+        getSingleTodo(todoId:ID!): Todo!
         loginUser(email: String!, password: String!): LoginData!
     }
     type RootMutation {

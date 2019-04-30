@@ -22,6 +22,23 @@ module.exports =
             throw err;
         }; 
     },
+    getSingleTodo: async (args, req) => {	
+        checkAuth(req);	
+
+         try {	
+            const todoExists = await TodoDB.findById(args.todoId)	
+
+             if (!todoExists) {	
+                throw new Error('Todo not found.')	
+            }	
+
+             return reformatResults(todoExists);   	
+        }	
+        catch (err) {	
+            console.log('\n-----> GraphQL getSingleTodo Error:\n', err);	
+            throw err;	
+        };	
+    },
     createTodo: async (args, req) => {
         checkAuth(req);
 
@@ -85,11 +102,17 @@ module.exports =
         checkAuth(req);
 
         try {
+            const user = await UserDB.findById(req.userId);
             const todo = await TodoDB.findById(args.todoId);
 
             if (!todo) {
                 throw new Error('Todo not found.')
-            }             
+            }   
+
+            const createdTodosArr = user.createdTodos;
+            const todoIndex = (createdTodosArr).indexOf(todo._id);
+            (createdTodosArr).splice(todoIndex, 1);
+            await user.save();
 
             await TodoDB.deleteOne({ _id: todo });
 
