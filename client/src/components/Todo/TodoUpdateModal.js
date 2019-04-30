@@ -28,7 +28,7 @@ export default class TodoUpdate extends Component {
     });
   }
 
-  handleSubmit = async event => {
+  handleUpdate = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
 
@@ -110,7 +110,7 @@ export default class TodoUpdate extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleUpdate}>
             <Modal.Header closeButton>
                 <Modal.Title>{this.props.title}</Modal.Title>
             </Modal.Header>

@@ -44,13 +44,10 @@ module.exports =
 
         try {
             const user = await UserDB.findById(req.userId);
-            const todo = await TodoDB.findOne({ title: args.todoInput.title });
-            
+            // const todo = await TodoDB.findOne({ title: args.todoInput.title });
+
             if (!user) {
                 throw new Error('User not found.')
-            }
-            else if (todo){
-                throw new Error('Todo with that title already exists.')
             }
 
             const newTodo = await new TodoDB({

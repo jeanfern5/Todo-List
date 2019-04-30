@@ -15,12 +15,6 @@ export default class TodoDelete extends Component {
     };
   };
 
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
   handleDelete = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });

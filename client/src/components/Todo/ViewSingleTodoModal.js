@@ -14,12 +14,6 @@ export default class ViewSingleTodo extends Component {
     };
   };
 
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
   handleSubmit = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });

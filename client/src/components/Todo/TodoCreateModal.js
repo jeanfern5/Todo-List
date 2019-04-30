@@ -29,7 +29,7 @@ export default class TodoCreate extends Component {
     });
   }
 
-  handleSubmit = async event => {
+  handleCreate = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
 
@@ -60,7 +60,6 @@ export default class TodoCreate extends Component {
                   throw new Error('Create Todo Failed!');
               }
       
-              console.log('--->HERE', res.status)
               return res.json();
             })
             .then(resData => {
@@ -97,6 +96,7 @@ export default class TodoCreate extends Component {
 
 
   render() {
+    console.log('---->Create', this.props)
     return (
       <Modal
       {...this.props}
@@ -108,7 +108,7 @@ export default class TodoCreate extends Component {
         <Modal.Header closeButton></Modal.Header>
         
         <Modal.Body>
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleCreate}>
               <FormGroup controlId="title">
                 <FormControl
                   onChange={this.handleChange}

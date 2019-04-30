@@ -27,53 +27,52 @@ export default class TodoContainer extends Component {
     this.fetchTodos();
   };
 
-
-fetchTodos() {
-    const requestBody = {
-        query: `
-        query {
-            getTodos {
-                _id
-                title
-                description
-                date
-            }
-        }
-      `
-    }
-
-    fetch('http://localhost:8080/graphql', {
-        method: 'POST',
-        body: JSON.stringify(requestBody),
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + config.TOKEN
-        }
-        })
-        .then(res => {
-          if ((res.status !== 200) && (res.status !== 201)) {
-              throw new Error('Retrieve Todo Failed!');
+  fetchTodos() {
+      const requestBody = {
+          query: `
+          query {
+              getTodos {
+                  _id
+                  title
+                  description
+                  date
+              }
           }
-  
-          return res.json();
-        })
-        .then(resData => {
-            if (resData.errors) {
-             alert(resData.errors[0].message);
+        `
+      }
+
+      fetch('http://localhost:8080/graphql', {
+          method: 'POST',
+          body: JSON.stringify(requestBody),
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + config.TOKEN
+          }
+          })
+          .then(res => {
+            if ((res.status !== 200) && (res.status !== 201)) {
+                throw new Error('Retrieve Todo Failed!');
             }
+    
+            return res.json();
+          })
+          .then(resData => {
+              if (resData.errors) {
+              alert(resData.errors[0].message);
+              }
 
-            const todos = resData.data.getTodos;
+              const todos = resData.data.getTodos;
 
-            this.setState({ todos: todos, isLoading: false });
+              this.setState({ todos: todos, isLoading: false });
 
-            console.log('Retrieve Todo Data:', resData);
-        })
-        .catch(err => {
-            console.log('Retrieve Todo Error:', err);
-        })
-};
+              console.log('Retrieve Todo Data:', resData);
+          })
+          .catch(err => {
+              console.log('Retrieve Todo Error:', err);
+          })
+  };
 
-  showDetailHandler = () => {
+  showDetails = () => {
     this.setState({ selectedTodo: true })
   };
 
