@@ -81,7 +81,7 @@ module.exports =
             throw err; 
         };
     },
-    deleteTodo: async (args) => {
+    deleteTodo: async (args, req) => {
         checkAuth(req);
 
         try {

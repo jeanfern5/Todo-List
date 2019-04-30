@@ -12,6 +12,7 @@ export default class TodoUpdate extends Component {
 
     this.state = {
       isLoading: null,
+      modalShows: false,
       description: "",
       date: "",
     };
@@ -35,7 +36,7 @@ export default class TodoUpdate extends Component {
         const requestBody = {
             query: `
             mutation {
-                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
+                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description || this.props.description}", date: "${this.state.date || this.props.date}" }) {
                     _id
                     title
                     description
@@ -97,9 +98,81 @@ export default class TodoUpdate extends Component {
     }
   };
 
+  handleDelete = async event => {
+    event.preventDefault();
+    this.setState({ isLoading: true });
+
+    try{
+        const requestBody = {
+            query: `
+            mutation deleteOne {
+                deleteTodo(todoId:"${this.props.todo_id}"){
+                    _id
+                    title
+                    description
+                    date
+                    user {
+                      _id
+                    }
+                }
+            }
+          `
+        };
+
+        fetch('http://localhost:8080/graphql', {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + config.TOKEN
+            }
+            })
+            .then(res => {
+              if ((res.status !== 200) && (res.status !== 201)) {
+                  throw new Error('Delete Todo Failed!');
+              }
+              console.log('Delete Todo Data1:', res);
+              return res.json();
+            })
+            .then(resData => {
+                if (resData.errors) {
+                 alert(resData.errors[0].message);
+                }
+
+                // this.setState(prevState => {
+                //   const updatedTodos = [...prevState.todos];
+                
+                //   updatedTodos.push({
+                //     _id: resData.data.updateTodo._id,
+                //     title: resData.data.updateTodo.title,
+                //     date: resData.data.updateTodo.date,
+                //     description: resData.data.updateTodo.description,
+                //     user: {
+                //       _id: resData.data.updateTodo.user._id
+                //     }
+                //   });
+                //   return { todos: updatedTodos };
+                // });
+                this.setState({ isLoading: false, modalShows: false }); 
+                console.log('Delete Todo Data:', resData.data);
+            })
+            .catch(err => {
+                console.log('Delete Todo Error:', err);
+                this.setState({ isLoading: false });
+            })
+
+    } catch(err) {
+        alert(err);
+        this.setState({ isLoading: false });
+    }
+  };
+
 
   render() {
     let formatDate = date => date.split('T')[0];
+
+    console.log('------>Update1', this.props)
+    console.log('------>Update2', this.state)
 
     return (
       <Modal
@@ -133,10 +206,21 @@ export default class TodoUpdate extends Component {
                 </FormGroup>
             </Modal.Body>
             <Modal.Footer>
+                <div style={{display:"flex"}}>
+                <LoaderButton
+                block
+                bsStyle="danger"
+                bsSize="small"
+                type="submit"
+                isLoading={this.state.isLoading}
+                text="Delete Todo"
+                loadingText="Deleting..."
+                onClick={this.handleDelete}
+                />
                 <LoaderButton
                 block
                 bsStyle="primary"
-                bsSize="large"
+                bsSize="small"
                 disabled={!this.validateForm()}
                 type="submit"
                 isLoading={this.state.isLoading}
@@ -144,6 +228,7 @@ export default class TodoUpdate extends Component {
                 loadingText="Updating..."
                 onClick={this.props.onHide}
                 />
+                </div>
             </Modal.Footer>
         </Form>
       </Modal>
