@@ -1,26 +1,19 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import styled from 'styled-components';
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
 
 
-export default class TodoUpdate extends Component {
+export default class TodoDelete extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoading: null,
-      modalShows: false,
-      description: "",
-      date: "",
     };
   };
-
-  validateForm() {
-    return (this.props.date.length > 0);
-  }
 
   handleChange = event => {
     this.setState({
@@ -28,15 +21,15 @@ export default class TodoUpdate extends Component {
     });
   }
 
-  handleSubmit = async event => {
+  handleDelete = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
 
     try{
         const requestBody = {
             query: `
-            mutation {
-                updateTodo(todoId:"${this.props.todo_id}", todoInput: { title:"${this.props.title}", description:"${this.state.description || this.props.description}", date: "${this.state.date || this.props.date}" }) {
+            mutation deleteOne {
+                deleteTodo(todoId:"${this.props.todo_id}"){
                     _id
                     title
                     description
@@ -59,9 +52,9 @@ export default class TodoUpdate extends Component {
             })
             .then(res => {
               if ((res.status !== 200) && (res.status !== 201)) {
-                  throw new Error('Update Todo Failed!');
+                  throw new Error('Delete Todo Failed!');
               }
-              console.log('Update Todo Data1:', res);
+              console.log('Delete Todo Data1:', res);
               return res.json();
             })
             .then(resData => {
@@ -73,22 +66,21 @@ export default class TodoUpdate extends Component {
                 //   const updatedTodos = [...prevState.todos];
                 
                 //   updatedTodos.push({
-                //     _id: resData.data.updateTodo._id,
-                //     title: resData.data.updateTodo.title,
-                //     date: resData.data.updateTodo.date,
-                //     description: resData.data.updateTodo.description,
+                //     _id: resData.data.deleteTodo._id,
+                //     title: resData.data.deleteTodo.title,
+                //     date: resData.data.deleteTodo.date,
+                //     description: resData.data.deleteTodo.description,
                 //     user: {
-                //       _id: resData.data.updateTodo.user._id
+                //       _id: resData.data.deleteTodo.user._id
                 //     }
                 //   });
                 //   return { todos: updatedTodos };
                 // });
-
-                this.setState({ isLoading: false }); 
-                console.log('Update Todo Data:', resData.data);
+                this.setState({ isLoading: false, modalShows: false }); 
+                console.log('Delete Todo Data:', resData.data);
             })
             .catch(err => {
-                console.log('Update Todo Error:', err);
+                console.log('Delete Todo Error:', err);
                 this.setState({ isLoading: false });
             })
 
@@ -100,11 +92,7 @@ export default class TodoUpdate extends Component {
 
 
   render() {
-    let formatDate = date => date.split('T')[0];
-
-    console.log('------>Update1', this.props)
-    console.log('------>Update2', this.state)
-
+    console.log('---->Delete', this.props)
     return (
       <Modal
       {...this.props}
@@ -113,39 +101,22 @@ export default class TodoUpdate extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <Form onSubmit={this.handleSubmit}>
-            <Modal.Header closeButton>
-                <Modal.Title>{this.props.title}</Modal.Title>
-            </Modal.Header>
+        <Form onSubmit={this.handleDelete}>
+            <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
-                <FormGroup controlId="date">
-                <FormControl
-                    onChange={this.handleChange}
-                    value={this.state.date.length > 0 ? this.state.date : formatDate(this.props.date)}
-                    type="date"
-                />
-                </FormGroup>
-                <FormGroup controlId="description">
-                <FormControl
-                    onChange={this.handleChange}
-                    value={this.state.description.length > 0 ? this.state.description : (this.props.description.length > 0 ? this.props.description : "")}
-                    componentClass="textarea"
-                    placeholder={this.props.description.length <= 0 ? "notes..." : ""}
-                    style={{height:"7rem"}}
-
-                />
-                </FormGroup>
+                <div>Are you sure you want to delete <br/> 
+                    <span style={{fontWeight:"bold"}}>{this.props.title}</span>?
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <LoaderButton
                 block
-                bsStyle="primary"
+                bsStyle="danger"
                 bsSize="small"
-                disabled={!this.validateForm()}
                 type="submit"
                 isLoading={this.state.isLoading}
-                text="Update Todo"
-                loadingText="Updating..."
+                text="Delete Todo"
+                loadingText="Deleting..."
                 onClick={this.props.onHide}
                 />
             </Modal.Footer>
