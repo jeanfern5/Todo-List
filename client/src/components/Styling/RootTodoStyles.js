@@ -22,28 +22,19 @@ export const Heading = styled.h1`
     color:white;
 `;
 
+export const LandingContainer = styled.div`
+    min-height: 31rem;
+    margin: 5rem auto;
+`;
 
 export const LandingHeading = styled.h1`
     text-align: center;
     font-weight: bold;
     font-size: 1.5rem;
-    margin: 9rem 5% 0 5%;
 `;
 
 
 export const LandingContent = styled.h1`
     text-align: center;
     padding: 2rem;
-`;
-
-
-export const Button = styled.button`
-    width: 98.4%;
-    margin-top: 1rem;
-    border: 1px solid black;
-    background: black;
-    color: white;
-    height: 2.25rem;
-    border-radius: 5px;
-    margin-left: 5px; 
 `;

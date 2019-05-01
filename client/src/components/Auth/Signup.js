@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 
 import LoaderButton from "../LoaderButton";
+import { Form } from '../Styling/AuthStyles'
 
 
 export default class Signup extends Component {
@@ -71,7 +72,7 @@ export default class Signup extends Component {
       })
 
       this.setState({ isLoading: false });
-      alert('Sent Email Verification Link')
+      alert('Email Verification Sent')
       this.props.history.push("/login");
     } catch (err) {
       alert(err.message);
@@ -82,7 +83,7 @@ export default class Signup extends Component {
   
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
           <ControlLabel>Email</ControlLabel>
           <FormControl
@@ -108,6 +109,7 @@ export default class Signup extends Component {
             type="password"
           />
         </FormGroup>
+
         <LoaderButton
           block
           bsStyle="primary"
@@ -118,7 +120,7 @@ export default class Signup extends Component {
           text="Signup"
           loadingText="Signing up…"
         />
-      </form>
+      </Form>
     );
   }
 }

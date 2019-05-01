@@ -4,7 +4,8 @@ import { ButtonToolbar } from 'react-bootstrap';
 import TodoList from './TodoList'; //contains feature: displays all todos
 import TodoCreate from './TodoCreateModal'; //contains feature: adds a new todo
 import TodoItem from './TodoItem'; //contains feature: displays single todo, updates todo, and deletes todo
-import { Container, ContentContainer, Heading, Button, LandingHeading, LandingContent } from '../Styling/RootTodoStyles';
+import { Container, ContentContainer, Heading, LandingContainer, LandingHeading, LandingContent } from '../Styling/RootTodoStyles';
+import { Button } from '../Styling/GlobalStyles';
 import config from '../../config';
 import Spinner from "../Spinner/Spinner";
 
@@ -112,10 +113,10 @@ export default class TodoContainer extends Component {
 
   renderLanding() {
     return (
-      <Container>
+      <LandingContainer>
         <LandingHeading>Todo App</LandingHeading>
         <LandingContent>A simple way to keep track of all your todos.</LandingContent>
-      </Container>
+      </LandingContainer>
     );
   };
 
