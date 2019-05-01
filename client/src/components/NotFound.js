@@ -1,6 +1,8 @@
 import React from "react";
 
+import { Container, ContentContainer, Heading, Button, LandingHeading, LandingContent } from './Styling/RootTodoStyles';
+
 export default () =>
-  <div className="NotFound">
-    <h3>Sorry, page not found!</h3>
-  </div>;
+  <Container className="NotFound">
+    <LandingHeading>Sorry, page not found!</LandingHeading>
+  </Container>;

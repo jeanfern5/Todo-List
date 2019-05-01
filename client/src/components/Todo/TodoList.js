@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import TodoItem from './TodoItem';
-import { Content } from '../Styling/globalStyling'
+import { Content } from '../Styling/TodoListStyles'
 
 export default class TodoList extends Component {
     

@@ -5,7 +5,7 @@ import { FaBars, FaTrashAlt } from 'react-icons/fa';
 import TodoUpdate from './TodoUpdateModal';
 import TodoDelete from './TodoDeleteModal';
 import ViewSingleTodo from './ViewSingleTodoModal';
-import { Item } from '../Styling/globalStyling'
+import { Item } from '../Styling/TodoItemStyles'
 
 
 export default class TodoItem extends Component {
