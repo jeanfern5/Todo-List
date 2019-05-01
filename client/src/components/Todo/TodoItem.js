@@ -33,7 +33,7 @@ export default class TodoItem extends Component {
                     <p
                     style={{width:"3rem"}}
                     >
-                    {new Date(date).toLocaleDateString()}
+                    {new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'})}
                     </p>
                     <p
                     style={{margin:"0 0.5rem 0 1rem", width:"9.1rem"}}
@@ -53,7 +53,6 @@ export default class TodoItem extends Component {
                     <FaTrashAlt 
                     className="trash"
                     onClick={() => {this.setState({deleteModalShows: true})}}
-                    style={{margin:"0 0.75rem 0 0.5rem", height:"1rem"}}
                     />
                     <TodoDelete
                     show={this.state.deleteModalShows}
@@ -63,8 +62,8 @@ export default class TodoItem extends Component {
                     />
 
                     <FaBars
+                    className="bars"
                     onClick={() => {this.setState({updateModalShows: true})}}
-                    style={{height:"1rem"}}
                     />
                     <TodoUpdate
                     show={this.state.updateModalShows}

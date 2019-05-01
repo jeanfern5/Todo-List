@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, Modal } from "react-bootstrap";
-import styled from 'styled-components';
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
+import { TitleSpan, ModalForm } from '../Styling/GlobalStyles'
+
 
 
 export default class TodoUpdate extends Component {
@@ -110,9 +111,9 @@ export default class TodoUpdate extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <Form onSubmit={this.handleUpdate}>
+        <ModalForm onSubmit={this.handleUpdate}>
             <Modal.Header closeButton>
-                <Modal.Title>{this.props.title}</Modal.Title>
+                <Modal.Title><TitleSpan>{this.props.title}</TitleSpan></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <FormGroup controlId="date">
@@ -137,7 +138,7 @@ export default class TodoUpdate extends Component {
                 <LoaderButton
                 block
                 bsStyle="primary"
-                bsSize="small"
+                bsSize="large"
                 disabled={!this.validateForm()}
                 type="submit"
                 isLoading={this.state.isLoading}
@@ -146,14 +147,9 @@ export default class TodoUpdate extends Component {
                 onClick={this.props.onHide}
                 />
             </Modal.Footer>
-        </Form>
+        </ModalForm>
       </Modal>
     );
   }
 }
-
-
-const Form = styled.form`
-    padding: 1rem;
-`;
 

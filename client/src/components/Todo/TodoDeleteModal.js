@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
-import styled from 'styled-components';
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
+import { TitleSpan, ModalForm } from '../Styling/GlobalStyles'
+
 
 
 export default class TodoDelete extends Component {
@@ -94,18 +95,27 @@ export default class TodoDelete extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <Form onSubmit={this.handleDelete}>
-            <Modal.Header closeButton></Modal.Header>
-            <Modal.Body>
-                <div>Are you sure you want to delete <br/> 
-                    <span style={{fontWeight:"bold"}}>{this.props.title}</span>?
+        <Modal.Header 
+        closeButton
+        style={{padding:"5px"}}
+        >
+        </Modal.Header>
+
+        <ModalForm onSubmit={this.handleDelete}>
+            <Modal.Body
+            style={{lineHeight:"1.25rem"}}
+            >
+                <div>Are you sure you want to delete
+                <br/>
+                <TitleSpan>{this.props.title}</TitleSpan>?
                 </div>
             </Modal.Body>
+
             <Modal.Footer>
                 <LoaderButton
                 block
                 bsStyle="danger"
-                bsSize="small"
+                bsSize="large"
                 type="submit"
                 isLoading={this.state.isLoading}
                 text="Delete Todo"
@@ -113,14 +123,10 @@ export default class TodoDelete extends Component {
                 onClick={this.props.onHide}
                 />
             </Modal.Footer>
-        </Form>
+        </ModalForm>
       </Modal>
     );
   }
 }
 
-
-const Form = styled.form`
-    padding: 1rem;
-`;
 

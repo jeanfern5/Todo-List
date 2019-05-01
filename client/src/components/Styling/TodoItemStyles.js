@@ -12,4 +12,18 @@ export const Item = styled.div`
     &:hover {
         border-color: blue;
     }
+
+    .trash {
+        margin:0 0.75rem 0 0.5rem;
+        height: 1rem;
+
+        &:hover {
+            color: red;
+        }
+    }
+
+    .bars {
+        height: 1rem;
+    }
 `;
+

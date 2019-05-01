@@ -3,8 +3,7 @@ import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 
 import LoaderButton from "../LoaderButton";
-import { Form } from '../Styling/AuthStyles'
-import { Message } from '../Styling/GlobalStyles'
+import { Form, Message } from '../Styling/AuthStyles'
 
 
 export default class Login extends Component {

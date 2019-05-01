@@ -11,7 +11,11 @@ export const Button = styled.button`
     margin: 1rem 0 0 5px;
 `;
 
-export const Message = styled.p`
-    margin: 1rem auto;
-    color: red;
+export const TitleSpan = styled.span`
+    font-weight: bold;
 `;
+
+export const ModalForm = styled.form`
+    padding: 1rem;
+`;
+

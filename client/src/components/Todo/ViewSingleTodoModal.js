@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
-import styled from 'styled-components';
 
-import config from '../../config';
+import { TitleSpan } from '../Styling/GlobalStyles';
 
 
 export default class ViewSingleTodo extends Component {
@@ -13,59 +12,6 @@ export default class ViewSingleTodo extends Component {
       isLoading: null,
     };
   };
-
-  handleSubmit = async event => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    try{
-        const requestBody = {
-            query: `
-            mutation {
-                getSingleTodo(todoId:"${this.props.todo_id}") {
-                    _id
-                    title
-                    description
-                    date
-                }
-            }
-          `
-        };
-
-        fetch('http://localhost:8080/graphql', {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + config.TOKEN
-            }
-            })
-            .then(res => {
-              if ((res.status !== 200) && (res.status !== 201)) {
-                  throw new Error('Update Todo Failed!');
-              }
-              console.log('Update Todo Data1:', res);
-              return res.json();
-            })
-            .then(resData => {
-                if (resData.errors) {
-                 alert(resData.errors[0].message);
-                }
-
-                this.setState({ isLoading: false }); 
-                console.log('Update Todo Data:', resData.data);
-            })
-            .catch(err => {
-                console.log('Update Todo Error:', err);
-                this.setState({ isLoading: false });
-            })
-
-    } catch(err) {
-        alert(err);
-        this.setState({ isLoading: false });
-    }
-  };
-
 
   render() {
     let formatDate = date => date.split('T')[0].split('-')[1] + '/' +
@@ -80,24 +26,20 @@ export default class ViewSingleTodo extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <Form onSubmit={this.handleSubmit}>
-            <Modal.Header closeButton>
-                <Modal.Title> {formatDate(this.props.date)}</Modal.Title>
-            </Modal.Header>
+        <Modal.Header closeButton>
+            <Modal.Title> {formatDate(this.props.date)}</Modal.Title>
+        </Modal.Header>
 
-            <Modal.Body>
-            {this.props.title}
-                <br/>
-                {this.props.description}
-            </Modal.Body>
-        </Form>
+        <Modal.Body
+        style={{marginBottom:"10px"}}
+        >
+            <p><TitleSpan>{this.props.title}</TitleSpan></p>
+            <br/>
+            <p>{this.props.description}</p>
+        </Modal.Body>
       </Modal>
     );
   }
 }
 
-
-const Form = styled.form`
-    padding: 1rem;
-`;
 

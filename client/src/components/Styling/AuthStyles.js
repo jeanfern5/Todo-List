@@ -7,3 +7,8 @@ export const Form = styled.form`
     width: 75%;
     margin: 5rem auto;
 `;
+
+export const Message = styled.p`
+    margin: 1rem auto;
+    color: red;
+`;
