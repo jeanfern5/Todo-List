@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import { ButtonToolbar } from 'react-bootstrap';
 
 import TodoList from './TodoList'; //contains feature: displays all todos
 import TodoCreate from './TodoCreateModal'; //contains feature: adds a new todo
 import TodoItem from './TodoItem'; //contains feature: displays single todo, updates todo, and deletes todo
-import { ContentContainer, Heading } from '../Styling/globalStyling';
-import { ButtonToolbar, Button } from 'react-bootstrap';
+import { Container, ContentContainer, Heading, Button } from '../Styling/globalStyling';
 import config from '../../config';
 import Spinner from "../Spinner/Spinner";
 
@@ -80,7 +80,8 @@ export default class TodoContainer extends Component {
     let modalClose = () => this.setState({ modalShows: false });
 
     return (
-      <ContentContainer>
+      <Container>
+        <ContentContainer>
         <Heading>Todo List</Heading>
 
         {this.state.isLoading ? <Spinner /> : (
@@ -90,14 +91,14 @@ export default class TodoContainer extends Component {
         {this.state.selectedTodo && (
           <TodoItem show={this.state.modalShows} todos={this.state.todos}/>
         )}
+        </ContentContainer>
 
         <ButtonToolbar>
           <Button
           variant="primary"
-          style={{ width:'98.4%' }}
           onClick={() => this.setState({ modalShows: true })}
           >
-            Add New Todo Here!
+            Add New Todo!
           </Button>
           <TodoCreate
           todos={this.state.todos}
@@ -105,7 +106,7 @@ export default class TodoContainer extends Component {
           onHide={modalClose}
           />
         </ButtonToolbar>
-      </ContentContainer>
+      </Container>
     );
   };
 

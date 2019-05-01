@@ -2,11 +2,10 @@ import React, { Component, Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import styled from 'styled-components';
 import { Auth } from "aws-amplify";
 
 import Routes from "./Routes";
-
+import { AppContainer } from "./AppStyles"
 
 class App extends Component {
   constructor(props) {
@@ -58,17 +57,15 @@ class App extends Component {
       !this.state.isAuthenticating &&
       <AppContainer>
         <Navbar fluid collapseOnSelect>
-          <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">Logo</Link>
             </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav pullRight>
+
+            <Nav pullRight style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
               {this.state.isAuthenticated
                 ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                : <Fragment>
+                : 
+                <Fragment>
                     <LinkContainer to="/signup">
                       <NavItem>Signup</NavItem>
                     </LinkContainer>
@@ -78,28 +75,14 @@ class App extends Component {
                   </Fragment>
               }
             </Nav>
-          </Navbar.Collapse>
         </Navbar>
  
         <Routes childProps={childProps} />
       </AppContainer>
     );
-  }
-}
+  };
+
+};
 
 export default withRouter(App);
   
-
-
-
-
-
-const AppContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  font-family: sans-serif;
-  font-fize: 1.5rem;
-  width: 100vw;
-  height: 100vh;
-`;

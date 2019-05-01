@@ -82,18 +82,14 @@ export default class ViewSingleTodo extends Component {
       >
         <Form onSubmit={this.handleSubmit}>
             <Modal.Header closeButton>
-                <Modal.Title>{this.props.title}</Modal.Title>
+                <Modal.Title> {formatDate(this.props.date)}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
-                {formatDate(this.props.date)}
+            {this.props.title}
                 <br/>
                 {this.props.description}
             </Modal.Body>
-
-            {/* <Modal.Footer>
-                {formatDate(this.props.date)}
-            </Modal.Footer> */}
         </Form>
       </Modal>
     );
