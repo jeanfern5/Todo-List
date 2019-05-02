@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 
 import LoaderButton from "../LoaderButton";
-import { Form, Message } from '../Styling/AuthStyles'
+import { Form, Error, P } from '../Styling/AuthStyles'
 
 
 export default class Login extends Component {
@@ -89,6 +90,7 @@ export default class Login extends Component {
    
 
   render() {
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormGroup controlId="email" bsSize="large">
@@ -120,7 +122,9 @@ export default class Login extends Component {
           loadingText="Logging in…"
         />
 
-        <Message>{this.state.message}</Message>
+        <Link to="/login/forgotpassword"><P>Forgot password?</P></Link>
+
+        <Error>{this.state.message}</Error>
       </Form>
     );
   }

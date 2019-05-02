@@ -11,7 +11,7 @@ export const Button = styled.button`
     margin: 1rem 0 0 5px;
 `;
 
-export const TitleSpan = styled.span`
+export const BoldSpan = styled.span`
     font-weight: bold;
 `;
 

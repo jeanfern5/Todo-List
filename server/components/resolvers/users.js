@@ -1,7 +1,7 @@
 //GraphQL Users/Auth Resolver 
 //signs up a new user and logs in a user an existing user
 const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-global.fetch = require('node-fetch');
+global.fetch = require('node-fetch/lib');
 const Q = require('q');
 const deferred = Q.defer();
 

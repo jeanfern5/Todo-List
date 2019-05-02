@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Modal } from "react-bootstrap";
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
-import { TitleSpan, ModalForm } from '../Styling/GlobalStyles'
+import { BoldSpan, ModalForm } from '../Styling/GlobalStyles'
 
 
 
@@ -113,7 +113,7 @@ export default class TodoUpdate extends Component {
       >
         <ModalForm onSubmit={this.handleUpdate}>
             <Modal.Header closeButton>
-                <Modal.Title><TitleSpan>{this.props.title}</TitleSpan></Modal.Title>
+                <Modal.Title><BoldSpan>{this.props.title}</BoldSpan></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <FormGroup controlId="date">

@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
-import { TitleSpan, ModalForm } from '../Styling/GlobalStyles'
+import { BoldSpan, ModalForm } from '../Styling/GlobalStyles'
 
 
 
@@ -107,7 +107,7 @@ export default class TodoDelete extends Component {
             >
                 <div>Are you sure you want to delete
                 <br/>
-                <TitleSpan>{this.props.title}</TitleSpan>?
+                <BoldSpan>{this.props.title}</BoldSpan>?
                 </div>
             </Modal.Body>
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
 
-import { TitleSpan } from '../Styling/GlobalStyles';
+import { BoldSpan } from '../Styling/GlobalStyles';
 
 
 export default class ViewSingleTodo extends Component {
@@ -33,7 +33,7 @@ export default class ViewSingleTodo extends Component {
         <Modal.Body
         style={{marginBottom:"10px"}}
         >
-            <p><TitleSpan>{this.props.title}</TitleSpan></p>
+            <p><BoldSpan>{this.props.title}</BoldSpan></p>
             <br/>
             <p>{this.props.description}</p>
         </Modal.Body>
