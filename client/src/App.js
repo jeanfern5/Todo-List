@@ -6,6 +6,8 @@ import { Auth } from "aws-amplify";
 
 import Routes from "./Routes";
 import { AppContainer } from "./AppStyles"
+import logo from './components/Styling/todo-logo2.png';
+
 
 class App extends Component {
   constructor(props) {
@@ -58,7 +60,7 @@ class App extends Component {
       <AppContainer>
         <Navbar fluid collapseOnSelect>
             <Navbar.Brand>
-              <Link to="/">Logo</Link>
+              <Link to="/"><img  src={logo} style={{height:"1.5rem"}}alt="fireSpot"/></Link>
             </Navbar.Brand>
 
             <Nav pullRight style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>

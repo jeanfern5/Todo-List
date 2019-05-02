@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ButtonToolbar } from 'react-bootstrap';
+import { FaPlus } from 'react-icons/fa';
 
 import TodoList from './TodoList'; //contains feature: displays all todos
 import TodoCreate from './TodoCreateModal'; //contains feature: adds a new todo
@@ -164,7 +165,7 @@ export default class TodoContainer extends Component {
           variant="primary"
           onClick={() => this.setState({ modalShows: true })}
           >
-            Add New Todo!
+            <FaPlus style={{height:"2rem"}} />
           </Button>
           <TodoCreate
           handle_create_todo={this.handleCreate}

@@ -56,21 +56,7 @@ export default class TodoDelete extends Component {
                 if (resData.errors) {
                  alert(resData.errors[0].message);
                 }
-
-                // this.setState(prevState => {
-                //   const updatedTodos = [...prevState.todos];
                 
-                //   updatedTodos.push({
-                //     _id: resData.data.deleteTodo._id,
-                //     title: resData.data.deleteTodo.title,
-                //     date: resData.data.deleteTodo.date,
-                //     description: resData.data.deleteTodo.description,
-                //     user: {
-                //       _id: resData.data.deleteTodo.user._id
-                //     }
-                //   });
-                //   return { todos: updatedTodos };
-                // });
                 window.location.reload();
                 this.setState({ isLoading: false, modalShows: false }); 
                 console.log('Delete Todo Data:', resData.data);

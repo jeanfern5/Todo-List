@@ -69,20 +69,6 @@ export default class TodoUpdate extends Component {
                  alert(resData.errors[0].message);
                 }
 
-                // this.setState(prevState => {
-                //   const updatedTodos = [...prevState.todos];
-                
-                //   updatedTodos.push({
-                //     _id: resData.data.updateTodo._id,
-                //     title: resData.data.updateTodo.title,
-                //     date: resData.data.updateTodo.date,
-                //     description: resData.data.updateTodo.description,
-                //     user: {
-                //       _id: resData.data.updateTodo.user._id
-                //     }
-                //   });
-                //   return { todos: updatedTodos };
-                // });
                 window.location.reload();
                 this.setState({ isLoading: false }); 
                 console.log('Update Todo Data:', resData.data);
