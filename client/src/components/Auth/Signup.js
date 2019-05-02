@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-
+import config from "../../config"
 import LoaderButton from "../LoaderButton";
 import { Form } from '../Styling/AuthStyles'
 
@@ -50,7 +50,7 @@ export default class Signup extends Component {
         `
       }
 
-      fetch('http://localhost:8080/graphql', {
+      fetch(`${config.HOSTNAME}:8080/graphql`, {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Auth } from "aws-amplify";
-
+import config from "../../config"
 import LoaderButton from "../LoaderButton";
 import { Form, Error, P } from '../Styling/AuthStyles'
 
@@ -52,7 +52,8 @@ export default class Login extends Component {
       `
     }
 
-    fetch('http://localhost:8080/graphql', {
+
+      fetch(`${config.HOSTNAME}:8080/graphql`, {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {

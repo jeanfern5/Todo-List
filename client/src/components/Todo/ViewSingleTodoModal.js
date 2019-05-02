@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
-
 import { BoldSpan } from '../Styling/GlobalStyles';
 
 
