@@ -71,6 +71,7 @@ export default class TodoDelete extends Component {
                 //   });
                 //   return { todos: updatedTodos };
                 // });
+                window.location.reload();
                 this.setState({ isLoading: false, modalShows: false }); 
                 console.log('Delete Todo Data:', resData.data);
             })
@@ -113,10 +114,7 @@ export default class TodoDelete extends Component {
 
             <Modal.Footer>
                 <LoaderButton
-                block
                 bsStyle="danger"
-                bsSize="large"
-                type="submit"
                 isLoading={this.state.isLoading}
                 text="Delete Todo"
                 loadingText="Deleting..."

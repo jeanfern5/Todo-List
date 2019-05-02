@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, Modal } from "react-bootstrap";
+import styled from 'styled-components';
 
 import LoaderButton from "../LoaderButton";
 import config from '../../config';
-import { BoldSpan, ModalForm } from '../Styling/GlobalStyles'
-
 
 
 export default class TodoUpdate extends Component {
@@ -50,7 +49,7 @@ export default class TodoUpdate extends Component {
           `
         };
 
-      fetch(`${config.LOCALHOST}`, {
+        fetch('http://localhost:8080/graphql', {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -84,7 +83,7 @@ export default class TodoUpdate extends Component {
                 //   });
                 //   return { todos: updatedTodos };
                 // });
-
+                window.location.reload();
                 this.setState({ isLoading: false }); 
                 console.log('Update Todo Data:', resData.data);
             })
@@ -111,9 +110,9 @@ export default class TodoUpdate extends Component {
       centered="true"
       style={{ top:'20%' }}
       >
-        <ModalForm onSubmit={this.handleUpdate}>
+        <Form onSubmit={this.handleUpdate}>
             <Modal.Header closeButton>
-                <Modal.Title><BoldSpan>{this.props.title}</BoldSpan></Modal.Title>
+                <Modal.Title>{this.props.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <FormGroup controlId="date">
@@ -136,9 +135,6 @@ export default class TodoUpdate extends Component {
             </Modal.Body>
             <Modal.Footer>
                 <LoaderButton
-                block
-                bsStyle="primary"
-                bsSize="large"
                 disabled={!this.validateForm()}
                 type="submit"
                 isLoading={this.state.isLoading}
@@ -147,9 +143,14 @@ export default class TodoUpdate extends Component {
                 onClick={this.props.onHide}
                 />
             </Modal.Footer>
-        </ModalForm>
+        </Form>
       </Modal>
     );
   }
 }
+
+
+const Form = styled.form`
+    padding: 1rem;
+`;
 

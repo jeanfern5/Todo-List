@@ -10,6 +10,10 @@ export default ({
   ...props
 }) =>
   <Button
+    block
+    bsStyle="primary"
+    bsSize="large"
+    type="submit"
     className={`LoaderButton ${className}`}
     disabled={disabled || isLoading}
     {...props}

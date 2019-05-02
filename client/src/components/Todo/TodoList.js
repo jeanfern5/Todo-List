@@ -6,12 +6,16 @@ import { Content } from '../Styling/TodoListStyles'
 export default class TodoList extends Component {
     
     render() {
-
         return(
             <Content>
                 {this.props.todos.map((item) => (
-                <TodoItem key={item._id} todoId={item._id} item={item} />
+                <TodoItem 
+                    key={item._id} 
+                    todoId={item._id} 
+                    item={item} 
+                />
                 ))}
+
             </Content>
         );
     };

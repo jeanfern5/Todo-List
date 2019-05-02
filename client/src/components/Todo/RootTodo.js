@@ -3,7 +3,6 @@ import { ButtonToolbar } from 'react-bootstrap';
 
 import TodoList from './TodoList'; //contains feature: displays all todos
 import TodoCreate from './TodoCreateModal'; //contains feature: adds a new todo
-import TodoItem from './TodoItem'; //contains feature: displays single todo, updates todo, and deletes todo
 import { Container, ContentContainer, Heading, LandingContainer, LandingHeading, LandingContent } from '../Styling/RootTodoStyles';
 import { Button } from '../Styling/GlobalStyles';
 import config from '../../config';
@@ -17,7 +16,6 @@ export default class TodoContainer extends Component {
       todos:[],
       modalShows: false,
       isLoading: false,
-      selectedTodo: false,
       title: "",
       description: "",
       date: "",
@@ -29,6 +27,8 @@ export default class TodoContainer extends Component {
   };
 
   fetchTodos() {
+      this.setState({ isLoading: true });
+
       const requestBody = {
           query: `
           query {
@@ -73,8 +73,77 @@ export default class TodoContainer extends Component {
           })
   };
 
-  showDetails = () => {
-    this.setState({ selectedTodo: true })
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleCreate = async event => {
+    event.preventDefault();
+    this.setState({ isLoading: true });
+
+    try{
+        const requestBody = {
+            query: `
+            mutation {
+                createTodo(todoInput: { title:"${this.state.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
+                    _id
+                    title
+                    description
+                    date
+                }
+            }
+          `
+        };
+
+        fetch(`${config.LOCALHOST}`, {
+            method: 'POST',
+            body: JSON.stringify(requestBody),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + config.TOKEN
+            }
+            })
+            .then(res => {
+              if ((res.status !== 200) && (res.status !== 201)) {
+                  throw new Error('Create Todo Failed!');
+              }
+      
+              return res.json();
+            })
+            .then(resData => {
+                if (resData.errors) {
+                 alert(resData.errors[0].message);
+                }
+
+                
+                this.setState(prevState => {
+                  const updatedTodos = [...prevState.todos];
+
+                  updatedTodos.push({
+                    _id: resData.data.createTodo._id,
+                    title: resData.data.createTodo.title,
+                    date: resData.data.createTodo.date,
+                    description: resData.data.createTodo.description,
+                  });
+
+                  return { todos: updatedTodos };
+                });
+
+                this.setState({ isLoading: false }); 
+                console.log('Create Todo Data:', resData.data);
+                console.log('Updated Todos:', this.state.todos);
+            })
+            .catch(err => {
+                console.log('Create Todo Error:', err);
+                this.setState({ isLoading: false });
+            })
+
+    } catch(err) {
+        alert(err);
+        this.setState({ isLoading: false });
+    }
   };
 
   renderTodos() {
@@ -83,15 +152,11 @@ export default class TodoContainer extends Component {
     return (
       <Container>
         <ContentContainer>
-        <Heading>Todo List</Heading>
+          <Heading>Todo List</Heading>
 
-        {this.state.isLoading ? <Spinner /> : (
-          <TodoList todos={this.state.todos} />
-        )}
-
-        {this.state.selectedTodo && (
-          <TodoItem show={this.state.modalShows} todos={this.state.todos}/>
-        )}
+          {this.state.isLoading ? <Spinner /> : (
+            <TodoList todos={this.state.todos} />
+          )}
         </ContentContainer>
 
         <ButtonToolbar>
@@ -102,7 +167,11 @@ export default class TodoContainer extends Component {
             Add New Todo!
           </Button>
           <TodoCreate
-          todos={this.state.todos}
+          handle_create_todo={this.handleCreate}
+          handle_change={this.handleChange}
+          title={this.state.title}
+          date={this.state.date}
+          description={this.state.description}
           show={this.state.modalShows}
           onHide={modalClose}
           />

@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Modal } from "react-bootstrap";
 
 import LoaderButton from "../LoaderButton";
 import { ModalForm } from '../Styling/GlobalStyles';
-import config from '../../config';
 
 
 export default class TodoCreate extends Component {
@@ -20,80 +19,8 @@ export default class TodoCreate extends Component {
   };
 
   validateForm() {
-    return (this.state.title.length > 0) && (this.state.date.length > 0);
+    return (this.props.title.length > 0) && (this.props.date.length > 0);
   }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  }
-
-  handleCreate = async event => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    try{
-        const requestBody = {
-            query: `
-            mutation {
-                createTodo(todoInput: { title:"${this.state.title}", description:"${this.state.description}", date: "${this.state.date}" }) {
-                    _id
-                    title
-                    description
-                    date
-                }
-            }
-          `
-        };
-
-        fetch(`${config.LOCALHOST}`, {
-            method: 'POST',
-            body: JSON.stringify(requestBody),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + config.TOKEN
-            }
-            })
-            .then(res => {
-              if ((res.status !== 200) && (res.status !== 201)) {
-                  throw new Error('Create Todo Failed!');
-              }
-      
-              return res.json();
-            })
-            .then(resData => {
-                if (resData.errors) {
-                 alert(resData.errors[0].message);
-                }
-                
-                this.setState(prevState => {
-                  const updatedTodos = [...prevState.todos];
-
-                  updatedTodos.push({
-                    _id: resData.data.createTodo._id,
-                    title: resData.data.createTodo.title,
-                    date: resData.data.createTodo.date,
-                    description: resData.data.createTodo.description,
-                  });
-
-                  return { todos: updatedTodos };
-                });
-
-                this.setState({ isLoading: false }); 
-                console.log('Create Todo Data:', resData.data);
-            })
-            .catch(err => {
-                console.log('Create Todo Error:', err);
-                this.setState({ isLoading: false });
-            })
-
-    } catch(err) {
-        alert(err);
-        this.setState({ isLoading: false });
-    }
-  };
-
 
   render() {
     return (
@@ -111,26 +38,26 @@ export default class TodoCreate extends Component {
         </Modal.Header>
         
       
-        <ModalForm onSubmit={this.handleCreate}>
+        <ModalForm onSubmit={this.props.handle_create_todo}>
           <FormGroup controlId="title">
             <FormControl
-              onChange={this.handleChange}
-              value={this.state.title}
+              onChange={this.props.handle_change}
+              value={this.props.title}
               type="text"
               placeholder="title"
             />
           </FormGroup>
           <FormGroup controlId="date">
             <FormControl
-              onChange={this.handleChange}
-              value={this.state.date}
+              onChange={this.props.handle_change}
+              value={this.props.date}
               type="date"
             />
           </FormGroup>
           <FormGroup controlId="description">
           <FormControl
-              onChange={this.handleChange}
-              value={this.state.description}
+              onChange={this.props.handle_change}
+              value={this.props.description}
               componentClass="textarea"
               placeholder="notes..."
               style={{height:"7rem"}}
@@ -138,12 +65,7 @@ export default class TodoCreate extends Component {
           </FormGroup>
 
           <LoaderButton
-          block
-          bsStyle="primary"
-          bsSize="large"
           disabled={!this.validateForm()}
-          type="submit"
-          isLoading={this.state.isLoading}
           text="Create Todo"
           loadingText="Creating…"
           onClick={this.props.onHide}

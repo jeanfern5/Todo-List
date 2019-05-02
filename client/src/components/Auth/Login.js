@@ -68,13 +68,6 @@ export default class Login extends Component {
           return res.json();
         })
         .then(resData => {
-          // if (resData.data.loginUser.token) {
-          //   this.context.login(
-          //     resData.data.loginUser.token,
-          //     resData.data.loginUser.userId
-          //   )
-          // };
-
           console.log('Login Data:', resData);
         })
         .catch(err => {
