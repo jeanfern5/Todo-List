@@ -47,7 +47,7 @@ export default class TodoCreate extends Component {
           `
         };
 
-        fetch(`${config.HOSTNAME}:8080/graphql`, {
+        fetch(`${config.LOCALHOST}`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {
@@ -67,18 +67,18 @@ export default class TodoCreate extends Component {
                  alert(resData.errors[0].message);
                 }
                 
-                // this.setState(prevState => {
-                //   const updatedTodos = [...prevState.todos];
+                this.setState(prevState => {
+                  const updatedTodos = [...prevState.todos];
 
-                //   updatedTodos.push({
-                //     _id: resData.data.createTodo._id,
-                //     title: resData.data.createTodo.title,
-                //     date: resData.data.createTodo.date,
-                //     description: resData.data.createTodo.description,
-                //   });
+                  updatedTodos.push({
+                    _id: resData.data.createTodo._id,
+                    title: resData.data.createTodo.title,
+                    date: resData.data.createTodo.date,
+                    description: resData.data.createTodo.description,
+                  });
 
-                //   return { todos: updatedTodos };
-                // });
+                  return { todos: updatedTodos };
+                });
 
                 this.setState({ isLoading: false }); 
                 console.log('Create Todo Data:', resData.data);

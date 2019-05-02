@@ -50,7 +50,7 @@ export default class TodoUpdate extends Component {
           `
         };
 
-      fetch(`${config.HOSTNAME}:8080/graphql`, {
+      fetch(`${config.LOCALHOST}`, {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {

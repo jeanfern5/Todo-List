@@ -53,7 +53,7 @@ export default class Login extends Component {
     }
 
 
-      fetch(`${config.HOSTNAME}:8080/graphql`, {
+      fetch(`${config.LOCALHOST}`, {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {
