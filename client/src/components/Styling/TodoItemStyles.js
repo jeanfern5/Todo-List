@@ -10,7 +10,8 @@ export const Item = styled.div`
     justify-content: space-between;
 
     &:hover {
-        border-color: blue;
+        border-color: #f2af58;
+        cursor: grab;
     }
 
     .trash {
@@ -24,6 +25,10 @@ export const Item = styled.div`
 
     .bars {
         height: 1rem;
+
+        &:hover{
+            color: #f2af58;
+        }
     }
 `;
 

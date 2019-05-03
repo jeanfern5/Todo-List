@@ -165,7 +165,7 @@ export default class TodoContainer extends Component {
           variant="primary"
           onClick={() => this.setState({ modalShows: true })}
           >
-            <FaPlus style={{height:"2rem"}} />
+            <FaPlus className="plus" />
           </Button>
           <TodoCreate
           handle_create_todo={this.handleCreate}
