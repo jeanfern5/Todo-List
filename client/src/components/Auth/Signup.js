@@ -50,7 +50,7 @@ export default class Signup extends Component {
         `
       }
 
-      fetch(`${config.LOCALHOST}`, {
+      fetch((config.HOSTNAME), {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {

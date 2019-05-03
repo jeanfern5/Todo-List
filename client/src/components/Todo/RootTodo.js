@@ -43,7 +43,7 @@ export default class TodoContainer extends Component {
         `
       }
 
-      fetch(`${config.LOCALHOST}`, {
+      fetch((config.HOSTNAME), {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: {
@@ -98,7 +98,7 @@ export default class TodoContainer extends Component {
           `
         };
 
-        fetch(`${config.LOCALHOST}`, {
+        fetch((config.HOSTNAME), {
             method: 'POST',
             body: JSON.stringify(requestBody),
             headers: {

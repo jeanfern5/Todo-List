@@ -8,8 +8,6 @@ export default {
     TOKEN: localStorage.getItem(`CognitoIdentityServiceProvider.AWS_CLIENT_ID.${localStorage.getItem(`CognitoIdentityServiceProvider.AWS_CLIENT_ID.LastAuthUser`)}.accessToken`),
 
     HOSTNAME: "http://ec2-3-16-45-90.us-east-2.compute.amazonaws.com:8080/graphql",
-
-    LOCALHOST: "http://localhost:8080/graphql"
 };
 
 
