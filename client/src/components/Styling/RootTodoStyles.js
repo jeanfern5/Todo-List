@@ -14,12 +14,10 @@ export const Container = styled.div`
     }
 `;
 
-
 export const ContentContainer = styled.div`
     border: .25rem solid black;
     border-radius: 3px;
 `;
-
 
 export const Heading = styled.h1`
     text-align: center;
@@ -40,7 +38,6 @@ export const LandingHeading = styled.h1`
     font-weight: bold;
     font-size: 1.5rem;
 `;
-
 
 export const LandingContent = styled.h1`
     text-align: center;

@@ -59,16 +59,16 @@ class App extends Component {
     return (
       !this.state.isAuthenticating &&
       <AppContainer>
-        <Navbar fluid collapseOnSelect>
+        <Navbar fluid collapseOnSelect className="Navbar">
           <Navbar.Brand>
-            <Link to="/"><img  src={logo} style={{height:"1.5rem"}} alt="logo"/></Link>
+            <Link to="/"><img  src={logo} alt="logo" className="Logo" /></Link>
           </Navbar.Brand>
           <Navbar.Toggle/>
 
           <Navbar.Collapse>
-            <Nav pullRight style={{display:"flex", flexDirection:"row", position:"fixed"}}>
+            <Nav pullRight className="Nav">
               {this.state.isAuthenticated
-                ? <NavItem style={{marginLeft:"5rem"}} onClick={this.handleLogout}>Logout</NavItem>
+                ? <NavItem onClick={this.handleLogout} className="Logout">Logout</NavItem>
                 : 
                 <Fragment>
                     <LinkContainer to="/signup">
