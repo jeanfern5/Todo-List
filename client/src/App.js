@@ -16,6 +16,7 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       isAuthenticating: true,
+      open: false,
     };
   };
 
@@ -59,13 +60,15 @@ class App extends Component {
       !this.state.isAuthenticating &&
       <AppContainer>
         <Navbar fluid collapseOnSelect>
-            <Navbar.Brand>
-              <Link to="/"><img  src={logo} style={{height:"1.5rem"}}alt="fireSpot"/></Link>
-            </Navbar.Brand>
+          <Navbar.Brand>
+            <Link to="/"><img  src={logo} style={{height:"1.5rem"}} alt="logo"/></Link>
+          </Navbar.Brand>
+          <Navbar.Toggle/>
 
-            <Nav pullRight style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
+          <Navbar.Collapse>
+            <Nav pullRight style={{display:"flex", flexDirection:"row", position:"fixed"}}>
               {this.state.isAuthenticated
-                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                ? <NavItem style={{marginLeft:"5rem"}} onClick={this.handleLogout}>Logout</NavItem>
                 : 
                 <Fragment>
                     <LinkContainer to="/signup">
@@ -77,6 +80,7 @@ class App extends Component {
                   </Fragment>
               }
             </Nav>
+          </Navbar.Collapse>
         </Navbar>
  
         <Routes childProps={childProps} />
