@@ -1,6 +1,6 @@
 
 FROM node
-RUN mkdir /workspace 
+#RUN mkdir /workspace 
 RUN mkdir /database
 RUN apt-get update && apt-get install -y \
 	vim \

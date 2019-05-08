@@ -4,6 +4,12 @@ build-docker:
 run-docker-server:
 	docker run -u 0 -it -p 8080:8080  -v $(shell pwd):/workspace todo_container bash
 
+
+run-docker-test:
+	docker run -u 0 -it --network host  -v $(shell pwd):/workspace todo_container bash
+
+
+
 run-docker-client:
 	docker run -u 0 -it -p 80:5000 -v $(shell pwd):/workspace todo_container bash
 

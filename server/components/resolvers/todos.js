@@ -14,6 +14,7 @@ module.exports =
             const retrievedTodos = await TodoDB.find({ user: req.userId });
 
             return retrievedTodos.map(todo => {
+                console.log('Todos Resolver', todo)
                 return reformatResults(todo);
             });    
         }

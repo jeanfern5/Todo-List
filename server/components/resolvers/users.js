@@ -16,7 +16,7 @@ const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 module.exports = 
 {
-    signupUser: async (args) => {
+    signupUser: async (args, res) => {
         const { email, password } = args.userInput;
 
         try {
@@ -55,7 +55,7 @@ module.exports =
             };
 
             AWS_Auth();
-            return deferred.promise;
+            return res.status(201).json(deferred.promise);
         }
         catch (err) {
             throw ('GraphQL loginUser Error:', err);
