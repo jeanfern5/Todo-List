@@ -6,6 +6,14 @@ export const Form = styled.form`
     flex-direction: column;
     width: 75%;
     margin: 5rem auto;
+
+    @media (min-width: 768px){
+        width: 50%;
+    }
+
+    @media (min-width: 1000px){
+        width: 30%;
+    }
 `;
 
 export const Error = styled.p`
