@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     min-height: 31rem;
-    padding: 0 5%;
+    padding: 2% 32%;
 
     .plus{
         height:2rem;
