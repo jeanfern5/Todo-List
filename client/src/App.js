@@ -66,9 +66,9 @@ class App extends Component {
           <Navbar.Toggle/>
 
           <Navbar.Collapse>
-            <Nav pullRight className="Nav">
+            <Nav pullRight className="Nav Auth">
               {this.state.isAuthenticated
-                ? <NavItem onClick={this.handleLogout} className="Logout">Logout</NavItem>
+                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
                 : 
                 <Fragment>
                     <LinkContainer to="/signup">

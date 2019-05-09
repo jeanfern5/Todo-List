@@ -30,15 +30,8 @@ export default class TodoItem extends Component {
                 onClick={() => {this.setState({singleTodoModalShows: true})}}
                 style={{display:"flex", flexDirection:"row", fontWeight:"bold", fontSize:"0.725rem"}}
                 >
-                    <p
-                    style={{width:"3rem"}}
-                    >
-                    {new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'})}
-                    </p>
-                    <p
-                    style={{margin:"0 0.5rem 0 1rem", width:"9.1rem"}}
-                    >{title.length > 24 ? title.substring(0, 21) + "..." : title}
-                    </p>
+                    <p className="date">{new Date(date).toLocaleDateString('en-US', {timeZone: 'UTC'})}</p>
+                    <p className="title">{title.length > 26 ? title.substring(0, 23) + " ..." : title}</p>
                 </div>
                 <ViewSingleTodo
                 show={this.state.singleTodoModalShows}

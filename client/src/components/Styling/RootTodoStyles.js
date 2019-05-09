@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
     min-height: 31rem;
-    padding: 2% 32%;
+    padding: 0 5%;
 
     .plus{
         height:2rem;
@@ -11,6 +11,10 @@ export const Container = styled.div`
         &:hover{
             color: orange;
         }
+    }
+
+    @media (min-width: 1400px){
+        padding: 2% 27%;
     }
 `;
 

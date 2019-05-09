@@ -92,10 +92,7 @@ export default class TodoDelete extends Component {
             <Modal.Body
             style={{lineHeight:"1.25rem"}}
             >
-                <div>Are you sure you want to delete
-                <br/>
-                <BoldSpan>{this.props.title}</BoldSpan>?
-                </div>
+                <div>Are you sure you want to delete <BoldSpan>{this.props.title}</BoldSpan>?</div>
             </Modal.Body>
 
             <Modal.Footer>

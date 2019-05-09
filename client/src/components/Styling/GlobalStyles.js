@@ -10,7 +10,6 @@ export const Button = styled.button`
     border-radius: 5px;
     margin: 1rem 0 0 5px;
     
-    //iPad
     @media (min-width: 768px){
         width: 99.5%
     }

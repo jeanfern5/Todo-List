@@ -21,21 +21,21 @@ export const AppContainer = styled.div`
     width: 50%;
   }
 
-  //iPhone 6/7/8 - inspect reference
+  //iPhone 6/7/8 - Mac inspect reference
   @media (min-width: 375px){
     .Nav {
       width: 58%;
     }
   } 
 
-  //iPhone 6/7/8 Plus & iPhone X - inspect reference
+  //iPhone 6/7/8 Plus & iPhone X - Mac inspect reference
   @media (min-width: 414px){
     .Nav {
       width: 61%;
     }
   }
 
-  //iPad - inspect reference
+  //iPad - Mac inspect reference
   @media (min-width: 768px){
     .Nav {
       width: 92%;
@@ -50,13 +50,13 @@ export const AppContainer = styled.div`
       margin-left: 1.5rem;
     }
 
-    .Logout {
+    .Auth {
       font-size: 1.25rem;
       margin-top: .5rem;
     }
   }
 
-  //iPad - inspect reference
+  //iPad - Mac inspect reference
   @media (min-width: 768px){
     .Nav {
       width: 92%;
@@ -71,26 +71,12 @@ export const AppContainer = styled.div`
       margin-left: 1.5rem;
     }
 
-    .Logout {
+    .Auth {
       font-size: 1.25rem;
       margin-top: .5rem;
     }
   }
-  
-  //iPad - inspect reference
-  @media (min-width: 768px){
-    .Nav {
-      width: 93%;
-    }
 
-    .Logo {
-      height: 2.25rem;
-      margin-left: 2.25rem;
-    }
-  }
-  
-
-  //13inch Screen - inspect reference
   @media (min-width: 1000px){
     .Navbar {
       padding: 2rem 0;
@@ -101,9 +87,20 @@ export const AppContainer = styled.div`
       margin:-2.25rem 0 0 6rem;
     }
 
-    .Logout {
+    .Auth {
       font-size: 1.25rem;
-      margin-top: -1.25rem;
+      margin-top: -1.3rem;
+    }
+  }
+
+  //iPad Pro- Mac inspect reference
+  @media (min-width: 1024px){
+    .Nav {
+      width: 93%;
+    }
+
+    .Logo {
+      margin: -2.25rem 0 0 2.25rem
     }
   }
 

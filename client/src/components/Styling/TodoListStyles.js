@@ -8,25 +8,25 @@ export const Content = styled.div`
     height: 23rem;
     overflow-y: scroll;
 
-    //iPhone 6/7/8 - inspect reference
+    //iPhone 6/7/8 - Mac inspect reference
     @media (min-height: 667px){
         width: 100%;
         height: 29rem;
     }  
 
-    //iPhone 6/7/8 Plus - inspect reference
+    //iPhone 6/7/8 Plus - Mac inspect reference
     @media (min-height: 736px){
         width: 100%;
         height: 33rem;
     } 
 
-    //iPhone X - inspect reference
+    //iPhone X - Mac inspect reference
     @media (min-height: 812px){
         width: 100%;
         height: 38rem;
     }  
 
-    //iPhone X - inspect reference
+    //iPhone X - Mac inspect reference
     @media (min-height: 812px){
         width: 100%;
         height: 38rem;
@@ -37,10 +37,10 @@ export const Content = styled.div`
         height: 42rem;
     } 
 
-    //iPad - inspect reference
+    //iPad - Mac inspect reference
     @media (min-height: 1024px){
         width: 100%;
-        height: 47rem;
+        height: 49rem;
     } 
 
     @media (min-height: 1138px){
@@ -53,10 +53,10 @@ export const Content = styled.div`
         height: 63rem;
     } 
 
-    //iPad Pro - inspect reference
+    //iPad Pro - Mac inspect reference
     @media (min-height: 1366px){
         width: 100%;
-        height: 71rem;
+        height: 70rem;
     } 
     
     
