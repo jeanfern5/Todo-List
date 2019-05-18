@@ -52,10 +52,6 @@ class App extends Component {
     this.setState({ token:token, userId:userId });
   };
 
-  logout = () => {
-    this.setState({ token: null, userId: null });
-  }
-
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
@@ -65,7 +61,7 @@ class App extends Component {
     return (
       !this.state.isAuthenticating &&
       <AppContainer>
-        <AuthContext.Provider value={{ token: this.state.token, userId: this.state.userId, login: this.login, logout: this.logout }}>
+        <AuthContext.Provider value={{ token: this.state.token, userId: this.state.userId, login: this.login }}>
           <Navbar fluid collapseOnSelect className="Navbar">
             <Navbar.Brand>
               <Link to="/"><img  src={logo} alt="logo" className="Logo" /></Link>

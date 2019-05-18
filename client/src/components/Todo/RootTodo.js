@@ -24,14 +24,11 @@ export default class TodoContainer extends Component {
     }
   };
 
-  static contextType = AuthContext;
-
   componentDidMount() {
     this.fetchTodos();
   };
 
   fetchTodos() {
-      console.log('Yooooooo')
       this.setState({ isLoading: true });
 
       const requestBody = {
@@ -47,15 +44,12 @@ export default class TodoContainer extends Component {
         `
       }
 
-      const token = this.context.token;
-      console.log('------>token', token)
-
-      fetch((config._LOCALHOST), {
+      fetch((config.HOSTNAME), {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token
+              'Authorization': 'Bearer ' + config.TOKEN()
           }
           })
           .then(res => {
@@ -111,7 +105,7 @@ export default class TodoContainer extends Component {
             body: JSON.stringify(requestBody),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + config.TOKEN
+                'Authorization': 'Bearer ' + config.TOKEN()
             }
             })
             .then(res => {

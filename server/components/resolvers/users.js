@@ -84,14 +84,12 @@ module.exports =
 
                     const user = await UserDB.findOne({ email: email });
                     const userId = await user._id;
-                    console.log('Server--->', tokens.accessToken)
                     deferred.resolve({ userId: userId, token: tokens.accessToken });
                 },
                 onFailure: function(err) {
                     deferred.reject(err.message);
                 }
             });
-            console.log('SERVER Hit?')
             return deferred.promise;
         }
         catch (err) {

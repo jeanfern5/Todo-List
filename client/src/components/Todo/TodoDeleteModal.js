@@ -42,7 +42,7 @@ export default class TodoDelete extends Component {
             body: JSON.stringify(requestBody),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + config.TOKEN
+                'Authorization': 'Bearer ' + config.TOKEN()
             }
             })
             .then(res => {

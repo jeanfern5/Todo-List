@@ -56,7 +56,7 @@ export default class Login extends Component {
     }
 
 
-      fetch((config._LOCALHOST), {
+      fetch((config.HOSTNAME), {
         method: 'POST',
         body: JSON.stringify(requestBody),
         headers: {

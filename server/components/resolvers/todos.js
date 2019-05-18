@@ -44,7 +44,6 @@ module.exports =
 
         try {
             const user = await UserDB.findById(req.userId);
-            // const todo = await TodoDB.findOne({ title: args.todoInput.title });
 
             if (!user) {
                 throw new Error('User not found.')
