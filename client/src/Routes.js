@@ -11,10 +11,10 @@ import ComponentRoute from './components/Routes';
 
 export default ({ childProps }) =>
   <Switch>
-    <ComponentRoute path="/" exact component={Todo} props={childProps} />
+    <ComponentRoute path="/signup" exact component={Signup} props={childProps} />
     <ComponentRoute path="/login" exact component={Login} props={childProps} />
     <ComponentRoute path="/login/forgotpassword" exact component={ForgotPassword} props={childProps} />
-    <ComponentRoute path="/signup" exact component={Signup} props={childProps} />
+    <ComponentRoute path="/" exact component={Todo} props={childProps} />
 
 
     <Route component={NotFound} />

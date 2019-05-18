@@ -55,7 +55,7 @@ module.exports =
             };
 
             AWS_Auth();
-            return res.status(201).json(deferred.promise);
+            return deferred.promise;
         }
         catch (err) {
             throw ('GraphQL loginUser Error:', err);
@@ -84,14 +84,14 @@ module.exports =
 
                     const user = await UserDB.findOne({ email: email });
                     const userId = await user._id;
-
+                    console.log('Server--->', tokens.accessToken)
                     deferred.resolve({ userId: userId, token: tokens.accessToken });
                 },
                 onFailure: function(err) {
                     deferred.reject(err.message);
                 }
             });
-
+            console.log('SERVER Hit?')
             return deferred.promise;
         }
         catch (err) {

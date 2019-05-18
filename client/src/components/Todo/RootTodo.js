@@ -8,6 +8,7 @@ import { Container, ContentContainer, Heading, LandingContainer, LandingHeading,
 import { Button } from '../Styling/GlobalStyles';
 import config from '../../config';
 import Spinner from "../Spinner/Spinner";
+import AuthContext from '../Auth/AuthContext';
 
 
 export default class TodoContainer extends Component {
@@ -23,11 +24,14 @@ export default class TodoContainer extends Component {
     }
   };
 
+  static contextType = AuthContext;
+
   componentDidMount() {
     this.fetchTodos();
   };
 
   fetchTodos() {
+      console.log('Yooooooo')
       this.setState({ isLoading: true });
 
       const requestBody = {
@@ -43,19 +47,23 @@ export default class TodoContainer extends Component {
         `
       }
 
-      fetch((config.HOSTNAME), {
+      const token = this.context.token;
+      console.log('------>token', token)
+
+      fetch((config._LOCALHOST), {
           method: 'POST',
           body: JSON.stringify(requestBody),
           headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + config.TOKEN
+              'Authorization': 'Bearer ' + token
           }
           })
           .then(res => {
             if ((res.status !== 200) && (res.status !== 201)) {
                 throw new Error('Retrieve Todo Failed!');
             }
-    
+
+            console.log('---->then', res);
             return res.json();
           })
           .then(resData => {
@@ -65,7 +73,7 @@ export default class TodoContainer extends Component {
 
               const todos = resData.data.getTodos;
 
-              this.setState({ todos: todos, isLoading: false });
+              this.setState({ isLoading: false, todos: todos });
 
               console.log('Retrieve Todo Data:', resData);
           })

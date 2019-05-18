@@ -16,14 +16,13 @@ const fetch = require('node-fetch')
 //     });
 //   });
 
-desc = function(){
 describe('GraphQL', () => {
     it('Fetch Todos',  (done) => {
-        const result =  request(url)
+        request(url)
         .post('/graphql')
         .send({query: `
             mutation {
-                signupUser(userInput: { email: "test3@gmail.com", password: "Test1234" }) {
+                signupUser(userInput: { email: "test1@gmail.com", password: "Test1234" }) {
                     _id
                     email
                     awsId
@@ -32,7 +31,8 @@ describe('GraphQL', () => {
       `})
         .end((err, res) => {
             
-             console.log('---->')
+             console.log('---->', res.body)
+             done();
          })
      
 
@@ -41,5 +41,5 @@ describe('GraphQL', () => {
      });
 
   });
-}
+
 

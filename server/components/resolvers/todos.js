@@ -9,7 +9,6 @@ module.exports =
 {
     getTodos: async (args, req) => {
         checkAuth(req);
-
         try {
             const retrievedTodos = await TodoDB.find({ user: req.userId });
 

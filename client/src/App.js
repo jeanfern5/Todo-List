@@ -7,7 +7,7 @@ import { Auth } from "aws-amplify";
 import Routes from "./Routes";
 import { AppContainer } from "./AppStyles"
 import logo from './components/Styling/todo-logo2.png';
-
+import AuthContext from './components/Auth/AuthContext';
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +17,8 @@ class App extends Component {
       isAuthenticated: false,
       isAuthenticating: true,
       open: false,
+      token: null,
+      userId: null,
     };
   };
 
@@ -50,6 +52,10 @@ class App extends Component {
     this.setState({ token:token, userId:userId });
   };
 
+  logout = () => {
+    this.setState({ token: null, userId: null });
+  }
+
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
@@ -59,31 +65,33 @@ class App extends Component {
     return (
       !this.state.isAuthenticating &&
       <AppContainer>
-        <Navbar fluid collapseOnSelect className="Navbar">
-          <Navbar.Brand>
-            <Link to="/"><img  src={logo} alt="logo" className="Logo" /></Link>
-          </Navbar.Brand>
-          <Navbar.Toggle/>
+        <AuthContext.Provider value={{ token: this.state.token, userId: this.state.userId, login: this.login, logout: this.logout }}>
+          <Navbar fluid collapseOnSelect className="Navbar">
+            <Navbar.Brand>
+              <Link to="/"><img  src={logo} alt="logo" className="Logo" /></Link>
+            </Navbar.Brand>
+            <Navbar.Toggle/>
 
-          <Navbar.Collapse>
-            <Nav pullRight className="Nav Auth">
-              {this.state.isAuthenticated
-                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
-                : 
-                <Fragment>
-                    <LinkContainer to="/signup">
-                      <NavItem>Signup</NavItem>
-                    </LinkContainer>
-                    <LinkContainer to="/login">
-                      <NavItem>Login</NavItem>
-                    </LinkContainer>
-                  </Fragment>
-              }
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
- 
-        <Routes childProps={childProps} />
+            <Navbar.Collapse>
+              <Nav pullRight className="Nav Auth">
+                {this.state.isAuthenticated
+                  ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                  : 
+                  <Fragment>
+                      <LinkContainer to="/signup">
+                        <NavItem>Signup</NavItem>
+                      </LinkContainer>
+                      <LinkContainer to="/login">
+                        <NavItem>Login</NavItem>
+                      </LinkContainer>
+                    </Fragment>
+                }
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+  
+          <Routes childProps={childProps} />
+        </AuthContext.Provider>
       </AppContainer>
     );
   };

@@ -13,7 +13,7 @@ module.exports =  async (req, res, next) => {
         req.isAuth = false;
         return next();
     }
-
+    console.log('isAuth token', token)
     let awsRes = await ValidateToken(token, req);
         
     req.isAuth = awsRes.isAuth;
