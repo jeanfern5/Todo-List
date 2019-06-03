@@ -7,7 +7,6 @@ import { Auth } from "aws-amplify";
 import Routes from "./Routes";
 import { AppContainer } from "./AppStyles"
 import logo from './components/Styling/todo-logo2.png';
-import AuthContext from './components/Auth/AuthContext';
 
 class App extends Component {
   constructor(props) {
@@ -61,7 +60,6 @@ class App extends Component {
     return (
       !this.state.isAuthenticating &&
       <AppContainer>
-        <AuthContext.Provider value={{ token: this.state.token, userId: this.state.userId, login: this.login }}>
           <Navbar fluid collapseOnSelect className="Navbar">
             <Navbar.Brand>
               <Link to="/"><img  src={logo} alt="logo" className="Logo" /></Link>
@@ -87,7 +85,6 @@ class App extends Component {
           </Navbar>
   
           <Routes childProps={childProps} />
-        </AuthContext.Provider>
       </AppContainer>
     );
   };

@@ -5,7 +5,7 @@ import { Auth } from "aws-amplify";
 import config from "../../config"
 import LoaderButton from "../LoaderButton";
 import { Form, Error, P } from '../Styling/AuthStyles'
-import AuthContext from './AuthContext';
+
 
 export default class Login extends Component {
   constructor(props) {
@@ -19,8 +19,6 @@ export default class Login extends Component {
         token: ''
     }; 
   };
-
-  static contextType = AuthContext;
 
   validateForm() {
     return (
@@ -71,13 +69,6 @@ export default class Login extends Component {
           return res.json();
         })
         .then(resData => {
-          if (resData.data.loginUser.token) {
-            this.context.login(
-              resData.data.loginUser.token,
-              resData.data.loginUser.userId,
-            );
-          }
-
           console.log('Login Data:', resData);
           this.setState({ isLoading: false });
           this.props.history.push("/");
