@@ -31,7 +31,7 @@ module.exports =
              if (!todoExists) {	
                 throw new Error('Todo not found.')	
             }	
-
+            
              return reformatResults(todoExists);   	
         }	
         catch (err) {	

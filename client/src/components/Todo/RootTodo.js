@@ -8,7 +8,6 @@ import { Container, ContentContainer, Heading, LandingContainer, LandingHeading,
 import { Button } from '../Styling/GlobalStyles';
 import config from '../../config';
 import Spinner from "../Spinner/Spinner";
-import AuthContext from '../Auth/AuthContext';
 
 
 export default class TodoContainer extends Component {
@@ -57,7 +56,6 @@ export default class TodoContainer extends Component {
                 throw new Error('Retrieve Todo Failed!');
             }
 
-            console.log('---->then', res);
             return res.json();
           })
           .then(resData => {
