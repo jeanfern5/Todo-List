@@ -1,16 +1,18 @@
 # Todo-List
 
-Overview: The student will develop a full-stack solution for a simple todo list application.
+Overview: Full-stack solution for a todo list application.
+
+## Table of Contents
+* [Frontend](#frontend)
+* [Backend](#backend)
+* [Stretch](#stretch)
+* [Local Setup](#local-setup)
 
 ## Frontend:
-* Implementation
-    * The application shall be written in React.js
-    * Any styling libraries, open-source packages, etc. can all be used however, be prepared to weigh these choices if asked
-    * Code should be commented as much as the student deems appropriate
 * Authentication
     * The application shall have simple authentication using a username and password
-    * The authentication functionality should support Login, Register, and
-Forgot Password
+    * The authentication functionality should support Login, Register, and Forgot Password
+    <img src="readmeImage/signup.pg" >
     * The application should not be accessible (other than the authentication screens) without users being logged in
 * Screens
     * Home
@@ -28,6 +30,7 @@ Forgot Password
         * As with the Add a Todo screen, a successful submission will bring the user to the Todo Details screen
     * Deleting Todos
         * While this functionality should be included in the app, it is up to you to decide where you will include it
+        
 ## Backend:
 * Authentication
     * As long as the requirements are met (login, register, and forgot password), implementation is up to the student. A few ideas include:
@@ -49,7 +52,8 @@ Forgot Password
     * Any database type and implementation is fair game to use, it is up to the student to decide. Some ideas include:
         * MySQL
         * MongoDB
-## Extra Credit: 
+        
+## Stretch: 
 Any of the items `highlighted` above are slightly advanced topics and will demonstrate a students drive and willingness to learn. Implementing any of the below will also show the same (all extra credit is weighted equally):
 * Instead of writing a web-based application, write the frontend in `React Native`
     * FYI: if students do not have a mac, they can use Expo
@@ -57,3 +61,5 @@ Any of the items `highlighted` above are slightly advanced topics and will demon
 * Write automated tests for the backend todo functionality using `Chai` and `Mocha`
 * If writing the frontend in React.js, automate frontend e2e tests using `Cypress.io`
 * If writing the frontend in React Native, automate the frontend e2e tests using `Detox`
+
+## Local Setup:
