@@ -1,6 +1,6 @@
 # Todo-List
 
-Overview: Full-stack todo list application.
+Overview: Full-stack todo list application. [Check it out!](http://ec2-3-16-45-90.us-east-2.compute.amazonaws.com)
 
 ## Table of Contents
 * [Local Setup](#local-setup)
@@ -8,7 +8,48 @@ Overview: Full-stack todo list application.
 * [Backend](#backend)
 
 ## Local Setup:
+1. Clone repo
+2. Install dependencies:
 
+   Docker | Not Using Docker
+   ------------ | -------------
+   Type `make build-docker` then make seperate containers:
+   Frontend: Type `make run-docker-client` | Frontend: Type `cd client` then `npm install`
+   Backend: Type `make run-docker-server` | Backend: Type `cd server` then `npm install`
+3. Secret files, use my connection info (ask for info) or create your own:
+   * Frontend:
+      * This code is available in client/src/configExample.js
+      ```
+         export default {
+          cognito: {
+            REGION: "AWS_POOL_REGION",
+            USER_POOL_ID: "AWS_USER_POOL_ID",
+            APP_CLIENT_ID: "AWS_CLIENT_ID"
+         },
+
+          TOKEN: localStorage.getItem(`CognitoIdentityServiceProvider.AWS_CLIENT_ID.${localStorage.getItem(`CognitoIdentityServiceProvider.AWS_CLIENT_ID.LastAuthUser`)}.accessToken`),
+
+          HOSTNAME: "HOSTNAME",
+         };
+      ```
+
+   * Backend: 
+      * This code is available in server/.envExample
+      ```
+         MONGO_USER=MONGO_USER_NAME
+         MONGO_PWD=MONGO_PASSWORD
+         MONGO_DB=MONGO_DATABASE_NAME
+
+         AWS_USER_POOL_ID=AWS_USER_POOL_ID
+         AWS_CLIENT_ID=AWS_CLIENT_ID
+         AWS_POOL_REGION=AWS_POOL_REGION
+      ```
+4. Run locally:
+
+   Docker | Not Using Docker
+   ------------ | -------------
+   Frontend: Type `make run-client` | Frontend: Within client/ type `npm start`
+   Backend: Type `make run-server` | Backend: Within server/ type `npm start`
 
 ## Frontend:
 * Authentication
@@ -47,7 +88,7 @@ Overview: Full-stack todo list application.
 * Authentication
     * Signup, Login, and Forgot Password was set using AWS Cognito.
 * Todos
-    * The service layer for todos Node and GraphQL.
+    * The service layer for todos used Node and GraphQL.
     * API endpoint for todos have the following functionalities
         * Add a todo
         * Edit a todo
