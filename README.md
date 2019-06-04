@@ -10,26 +10,31 @@ Overview: Full-stack solution for a todo list application.
 
 ## Frontend:
 * Authentication
-    * The application shall have simple authentication using a username and password
-    * The authentication functionality should support Login, Register, and Forgot Password
-    <img src="readmeImage/signup.pg" >
-    * The application should not be accessible (other than the authentication screens) without users being logged in
+    * The authentication functionality supports Signup, Login, and Forgot Password
+    <img src="readmeImages/signup.png" width="32.5%" > <img src="readmeImages/signin.png" width="31.5%" > <img src="readmeImages/forgotPassword.png" width="31%" >
+    * The application is not be accessible (other than the authentication screens) without users being logged in and if their account is not confirmed
+
+      <img src="readmeImages/incorrectPassword.png" width="24%" > <img src="readmeImages/userDoesNotExist.png" width="24%" > <img src="readmeImages/userNotConfirmed.png" width="24%" > <img src="readmeImages/unAuthHomePage.png" width="22.5%" >
+
+    
 * Screens
     * Home
-        * The home screen shall display a list of the current users todos
-        * If a todo is clicked, the user will be brought to the Todo Detail screen
-        * If the user clicks on “Add a Todo” they will be brought to the Add a Todo screen
-    * Todo Detail
-        * The selected todo will be displayed and convey its information: title, date, and description
-        * If the user clicks on “Edit Todo” they will be brought to the Edit a Todo screen
-    * Add a Todo
-        * This screen will display a form with the todo information that the user will submit
-        * Upon a successful submit, the user shall be brought to the Todo Detail screen
-    * Edit a Todo
-        * This screen will be similar to the Add a Todo screen, but will have the current todo information pre­filled in the form
-        * As with the Add a Todo screen, a successful submission will bring the user to the Todo Details screen
-    * Deleting Todos
-        * While this functionality should be included in the app, it is up to you to decide where you will include it
+       * All Todos
+           * The home screen shall display a list of the current users todos
+       * Todo Detail
+           * If a todo is clicked, the user will be brought to the Todo Detail screen
+           * The selected todo will be displayed and convey its information: title, date, and notes
+       * Add a Todo
+           * If the user clicks on “+” they will be brought to the Add a Todo screen
+           * This screen will display a form with the todo information that the user will submit
+           * Upon a successful submit, the user shall be brought to the Home screen
+       * Edit a Todo
+           * If the user clicks on “☰” they will be brought to the Edit a Todo screen
+           * This screen will be similar to the Add a Todo screen, but will have the current todo information pre­filled in the form
+           * As with the Add a Todo screen, a successful submission will bring the user to the Home screen
+       * Deleting Todos
+           * If the user clicks on trash icon they will be brought to the Delete a Todo screen
+
         
 ## Backend:
 * Authentication
