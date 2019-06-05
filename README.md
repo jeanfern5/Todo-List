@@ -48,7 +48,7 @@ Overview: Full-stack todo list application. [Check it out!](http://ec2-3-16-45-9
 
    Docker | Not Using Docker
    ------------ | -------------
-   Frontend: Type `make run-client` | Frontend: Within client/ type `npm start`
+   Frontend: Type `make run-client` | Frontend: Within client/ type `npm --max_old_space_size=8192 run build && npm install -g serve && serve -s build`
    Backend: Type `make run-server` | Backend: Within server/ type `npm start`
 
 ## Frontend:
