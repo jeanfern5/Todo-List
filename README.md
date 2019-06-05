@@ -14,8 +14,8 @@ Overview: Full-stack todo list application. [Check it out!](http://ec2-3-16-45-9
    Docker | Not Using Docker
    ------------ | -------------
    Type `make build-docker` then make seperate containers:
-   Frontend: Type `make run-docker-client` | Frontend: Type `cd client` then `npm install`
-   Backend: Type `make run-docker-server` | Backend: Type `cd server` then `npm install`
+   Frontend: Type `make run-docker-client` | Frontend: Type `cd client && npm --max_old_space_size=8192 run build && npm install -g serve`
+   Backend: Type `make run-docker-server` | Backend: Type `cd server && npm install`
 3. Secret files, use my connection info (ask for info) or create your own:
    * Frontend:
       * This code is available in client/src/configExample.js
@@ -48,7 +48,7 @@ Overview: Full-stack todo list application. [Check it out!](http://ec2-3-16-45-9
 
    Docker | Not Using Docker
    ------------ | -------------
-   Frontend: Type `make run-client` | Frontend: Within client/ type `npm --max_old_space_size=8192 run build && npm install -g serve && serve -s build`
+   Frontend: Type `make run-client` | Frontend: Within client/ type `serve -s build`
    Backend: Type `make run-server` | Backend: Within server/ type `npm start`
 
 ## Frontend:
